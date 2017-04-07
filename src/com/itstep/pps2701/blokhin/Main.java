@@ -15,7 +15,6 @@ public class Main {
                 "")){
             System.out.println("Соединение установлено");
 
-
             UserModel um = new UserModel(conn);
 
             List<User> list = um.getUsers();
