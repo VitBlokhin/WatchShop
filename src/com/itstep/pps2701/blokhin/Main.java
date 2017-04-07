@@ -5,6 +5,7 @@ import com.itstep.pps2701.blokhin.models.UserModel;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,9 +18,11 @@ public class Main {
 
             UserModel um = new UserModel(conn);
 
-            User user = um.getUserById(1);
+            List<User> list = um.getUsers();
 
-            System.out.println(user);
+            for(User user: list) {
+                System.out.println(user);
+            }
 
         } catch(Exception ex) {
             System.out.println("Ошибка соединения с БД: " + ex.getMessage());

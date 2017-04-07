@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Vit on 07.04.2017.
@@ -36,4 +38,26 @@ public class UserModel {
 
         return user;
     } // getUserById
+
+    public List<User> getUsers() throws SQLException{
+        List<User> userList= new ArrayList<>();
+
+        String sqlRequest = "select * from users";
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
+        ResultSet result = pstatement.executeQuery();
+
+        while(result.next()) {
+            userList.add(new User(result.getInt("id"),
+                    result.getString("name"),
+                    result.getString("address"),
+                    result.getString("phone"),
+                    result.getString("password"),
+                    result.getBoolean("status"),
+                    result.getBoolean("superuser")));
+        } // while
+        pstatement.close();
+
+        return userList;
+    } // getUsers
+
 } // class UserModel
