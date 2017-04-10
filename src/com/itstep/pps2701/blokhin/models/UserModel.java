@@ -28,7 +28,7 @@ public class UserModel {
         if(result.next()){
             user = new User(result.getInt("id"),
                     result.getString("name"),
-                    result.getString("address"),
+                    result.getString("email"),
                     result.getString("phone"),
                     result.getString("password"),
                     result.getBoolean("status"),
@@ -49,7 +49,7 @@ public class UserModel {
         while(result.next()) {
             userList.add(new User(result.getInt("id"),
                     result.getString("name"),
-                    result.getString("address"),
+                    result.getString("email"),
                     result.getString("phone"),
                     result.getString("password"),
                     result.getBoolean("status"),

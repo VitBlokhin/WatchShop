@@ -1,4 +1,4 @@
-package com.itstep.pps2701.blokhin.system;
+package com.itstep.pps2701.blokhin.controllers;
 
 import com.itstep.pps2701.blokhin.data.User;
 
@@ -10,8 +10,9 @@ import java.sql.DriverManager;
  */
 public class Session {
     private String connectionAddress = "localhost";
-    private int connectionPort = 3306;
     private String connectionBase = "watch_shop";
+    private int connectionPort = 3306;
+
 
     private Connection conn = null;
     private User currentUser = null;
@@ -32,15 +33,13 @@ public class Session {
     // сделать отдельный метод для формирования строки адреса подключения
     // начать делать GUI - окно ввода данных бд, далее логин, далее - основное окно программы
     // соответственно, привязать всё к логике работы сессии
-    public boolean connect(String addr, int port, String dbname){
+    public boolean connect(String url, String username, String password){
         boolean code = false;
         try{
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://"
-                            + addr + ":" + port + "/" + dbname
-                            + "?autoReconnect=true&useSSL=false",
-                    "root",
-                    "");
+                    getUrl(),
+                    username,
+                    password);
             code = true;
         } catch(Exception ex) {
             code = false;
@@ -49,6 +48,12 @@ public class Session {
             return code;
         } // finally
     } // connect
+
+    private String getUrl(){
+        return "jdbc:mysql://"
+                + connectionAddress + ":" + connectionPort + "/" + connectionBase
+                + "?autoReconnect=true&useSSL=false";
+    } // getUrl
 
     public void disconnect(){
         conn = null;

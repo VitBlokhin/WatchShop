@@ -6,16 +6,16 @@ package com.itstep.pps2701.blokhin.data;
 public class User {
     private int id;             // id пользователя
     private String name;        // фио
-    private String address;     // адрес
+    private String email;     // адрес
     private String phone;       // телефон
     private String password;    // пароль
     private boolean status;     // статус пользователя - работает/уволен
     private boolean superuser;  // принзнак суперпользователя
 
-    public User(int id, String name, String address, String phone, String password, boolean status, boolean superuser) {
+    public User(int id, String name, String email, String phone, String password, boolean status, boolean superuser) {
         this.id = id;
         this.name = name;
-        this.address = address;
+        this.email = email;
         this.phone = phone;
         this.password = password;
         this.status = status;
@@ -30,8 +30,8 @@ public class User {
         return name;
     }
 
-    public String getAddress() {
-        return address;
+    public String getEmail() {
+        return email;
     }
 
     public String getPhone() {
@@ -54,8 +54,8 @@ public class User {
         this.name = name;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPhone(String phone) {
@@ -76,6 +76,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", name='" + name + '\'' + ", address='" + address + '\'' + ", phone='" + phone + '\'' + ", password='" + password + '\'' + ", status=" + status + ", superuser=" + superuser + '}';
+        return "User{" + "id=" + id + ", name='" + name + '\'' + ", email='" + email + '\'' + ", phone='" + phone + '\'' + ", password='" + password + '\'' + ", status=" + status + ", superuser=" + superuser + '}';
     }
 } // class User
