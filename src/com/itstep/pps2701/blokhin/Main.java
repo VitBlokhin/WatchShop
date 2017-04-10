@@ -13,6 +13,8 @@ public class Main {
         try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/watch_shop?autoReconnect=true&useSSL=false",
                 "root",
                 "")){
+
+
             System.out.println("Соединение установлено");
 
             UserModel um = new UserModel(conn);
