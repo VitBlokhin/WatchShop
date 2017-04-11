@@ -60,4 +60,24 @@ public class UserModel {
         return userList;
     } // getUsers
 
+    public User getUserByNamePassword(String name, String password) throws SQLException{
+        User user;
+        String sqlRequest = "select * from users where `name` = " + name + " and `password` = " + password;
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
+        ResultSet result = pstatement.executeQuery();
+
+        if(result.next()){
+            user = new User(result.getInt("id"),
+                    result.getString("name"),
+                    result.getString("email"),
+                    result.getString("phone"),
+                    result.getString("password"),
+                    result.getBoolean("status"),
+                    result.getBoolean("superuser"));
+        } else return null;
+        pstatement.close();
+
+        return user;
+    } // getUserByNamePassword
+
 } // class UserModel

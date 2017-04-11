@@ -6,7 +6,7 @@ package com.itstep.pps2701.blokhin.data;
 public class User {
     private int id;             // id пользователя
     private String name;        // фио
-    private String email;     // адрес
+    private String email;       // адрес почты
     private String phone;       // телефон
     private String password;    // пароль
     private boolean status;     // статус пользователя - работает/уволен
