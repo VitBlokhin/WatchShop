@@ -24,10 +24,11 @@ public class ConnectionWindow extends JFrame {
         super(title);
         this.session = session;
 
-        buildGUI();
+        //buildGUI();
     }
 
-    private void buildGUI() {
+
+/*  private void buildGUI() {
         JPanel p1 = new JPanel();
         p1.setLayout(new BoxLayout(p1, BoxLayout.Y_AXIS));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -80,5 +81,5 @@ public class ConnectionWindow extends JFrame {
 
         setVisible(true);
     } // buildGUI
-
+*/
 } // class ConnectionWindow

@@ -29,6 +29,7 @@ public class ErrorWindow  extends JFrame {
 
         errorTextArea = new JTextArea(5,20);
         errorTextArea.setText(errorText);
+        errorTextArea.setLineWrap(true);
         errorTextArea.setEditable(false);
         btnOk = new JButton("Ok");
         btnOk.addActionListener(new AbstractAction() {
@@ -40,6 +41,7 @@ public class ErrorWindow  extends JFrame {
         });
 
         p1.add(errorTextArea);
+        p1.add(Box.createVerticalStrut(15));
         p1.add(btnOk);
 
         getContentPane().add(p1, "North");

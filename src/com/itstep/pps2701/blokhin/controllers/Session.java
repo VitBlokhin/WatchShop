@@ -14,7 +14,6 @@ public class Session {
     private String connectionAddress = "localhost";
     private String connectionBase = "watch_shop";
     private int connectionPort = 3306;
-    private String url;
 
     private Connection conn = null;
     private User currentUser = null;
@@ -30,6 +29,7 @@ public class Session {
     }
 
     public Session() {
+
     }
 
     public boolean login(String name, String password){
@@ -42,28 +42,14 @@ public class Session {
         currentUser = null;
     } // logout
 
-    // TODO: переделать метод под один строковый аргумент
-    // сделать отдельный метод для формирования строки адреса подключения
-    // начать делать GUI - окно ввода данных бд, далее логин, далее - основное окно программы
-    // соответственно, привязать всё к логике работы сессии
     public void connect(String username, String password) throws SQLException{
         conn = DriverManager.getConnection(
-                url,
+                "jdbc:mysql://"
+                        + connectionAddress + ":" + connectionPort + "/" + connectionBase
+                        + "?autoReconnect=true&useSSL=false",
                 username,
                 password);
     } // connect
-
-    private String getUrl(){
-        return "jdbc:mysql://"
-                + connectionAddress + ":" + connectionPort + "/" + connectionBase
-                + "?autoReconnect=true&useSSL=false";
-    } // getUrl
-
-    public void buildUrl(String addr, int port, String base){
-        url = "jdbc:mysql://"
-                + addr + ":" + port + "/" + base
-                + "?autoReconnect=true&useSSL=false";
-    } // buildUrl
 
     public void disconnect(){
         currentUser = null;
