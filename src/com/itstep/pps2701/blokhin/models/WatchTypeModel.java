@@ -50,7 +50,7 @@ public class WatchTypeModel  extends Model {
     @Override
     public void updateItem(IData item) throws SQLException {
         WatchType tmp = (WatchType)item;
-        String sqlUpdate = "update `watch_types` "
+        String sqlUpdate = "update `watch_types`"
                 + " set `type_name` = \'" + tmp.getTypename()
                 + "\' where `id` = \'" + tmp.getId() + "\';";
         PreparedStatement pstatement = connection.prepareStatement(sqlUpdate);
@@ -70,7 +70,7 @@ public class WatchTypeModel  extends Model {
     } // addItem
 
     @Override
-    protected WatchType parseItem(ResultSet result) throws SQLException {
+    final protected WatchType parseItem(ResultSet result) throws SQLException {
         return new WatchType(result.getInt("id"),
                 result.getString("type_name"));
     } // parseItem

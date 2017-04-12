@@ -27,7 +27,7 @@ public class Main {
             }
 
             User forChange = (User)list.get(list.size() - 1);
-            forChange.setStatus(true);
+            forChange.setStatus(false);
 
             um.updateItem(forChange);
 
