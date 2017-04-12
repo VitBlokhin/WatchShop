@@ -87,5 +87,10 @@ public class Watch implements IData  {
     public String toString() {
         return "Watch{" + "mark='" + mark + '\'' + ", price=" + price + ", quantity=" + quantity + ", visible=" + visible + ", producerId=" + producerId + ", typeId=" + typeId + '}';
     } // toString
+
+    @Override
+    public Object[] toObjects() {
+        return new Object[]{getId(), getMark(), getPrice(), getQuantity(), isVisible(), getProducerId(), getTypeId()};
+    }
 } // class Watch
 

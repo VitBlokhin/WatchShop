@@ -44,4 +44,9 @@ public class WatchProducer implements IData{
     public String toString() {
         return "WatchProducer{" + "id=" + id + ", name='" + name + '\'' + ", country='" + country + '\'' + '}';
     } // toString
+
+    @Override
+    public Object[] toObjects() {
+        return new Object[] {getId(), getName(), getCountry()};
+    }
 } // class WatchProducer

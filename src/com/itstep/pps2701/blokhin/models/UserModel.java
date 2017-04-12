@@ -97,7 +97,7 @@ public class UserModel extends Model{
         } else return null;
     } // getUserByNamePassword
 
-    protected final User parseItem(ResultSet result) throws SQLException{
+    final protected User parseItem(ResultSet result) throws SQLException{
         return new User(result.getInt("id"),
                 result.getString("name"),
                 result.getString("email"),

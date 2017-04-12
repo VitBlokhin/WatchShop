@@ -34,4 +34,9 @@ public class WatchType implements IData {
         return "WatchType{" + "id=" + id + ", typename=" + typename + '}';
     } // toString
 
+    @Override
+    public Object[] toObjects() {
+        return new Object[] {getId(), getTypename()};
+    }
+
 } // class WatchType

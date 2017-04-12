@@ -87,4 +87,9 @@ public class User implements IData {
     public String toString() {
         return "User{" + "id=" + id + ", name='" + name + '\'' + ", email='" + email + '\'' + ", phone='" + phone + '\'' + ", password='" + password + '\'' + ", status=" + status + ", superuser=" + superuser + '}';
     }
+
+    @Override
+    public Object[] toObjects() {
+        return new Object[]{getId(), getName(), getEmail(), getPhone(), getPassword(), isStatus(), isSuperuser()};
+    }
 } // class User

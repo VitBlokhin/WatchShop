@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Vit on 12.04.2017.
  */
-public abstract class Model {
+public abstract class Model implements IModel{
     private String connectionAddress = "localhost";
     private String connectionBase = "watch_shop";
     private int connectionPort = 3306;

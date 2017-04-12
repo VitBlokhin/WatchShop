@@ -5,4 +5,5 @@ package com.itstep.pps2701.blokhin.data;
  */
 public interface IData {
     public String toString();
+    public Object[] toObjects();
 }
