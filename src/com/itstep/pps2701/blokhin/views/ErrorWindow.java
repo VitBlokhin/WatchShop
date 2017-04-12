@@ -19,7 +19,7 @@ public class ErrorWindow  extends JFrame {
     }
 
     private void buildGUI() {
-        setSize(400, 380);
+        setSize(400, 300);
         setLocationRelativeTo(null);
         setResizable(false);
 

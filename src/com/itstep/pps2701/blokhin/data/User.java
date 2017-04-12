@@ -3,7 +3,7 @@ package com.itstep.pps2701.blokhin.data;
 /**
  * Created by Vit on 07.04.2017.
  */
-public class User {
+public class User implements IData {
     private int id;             // id пользователя
     private String name;        // фио
     private String email;       // адрес почты
@@ -14,6 +14,15 @@ public class User {
 
     public User(int id, String name, String email, String phone, String password, boolean status, boolean superuser) {
         this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.status = status;
+        this.superuser = superuser;
+    } // User
+
+    public User(String name, String email, String phone, String password, boolean status, boolean superuser) {
         this.name = name;
         this.email = email;
         this.phone = phone;
