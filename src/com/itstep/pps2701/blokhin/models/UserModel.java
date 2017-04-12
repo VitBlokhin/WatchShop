@@ -14,13 +14,11 @@ import java.util.List;
  */
 public class UserModel extends Model{
 
-    public UserModel() {
-        super();
-    }
+    public UserModel() { }
 
     public User getItemById(int id) throws SQLException{
         User user;
-        String sqlRequest = "select * from users where `id` = \'" + id + "\';";
+        String sqlRequest = "select * from `users` where `id` = \'" + id + "\';";
         PreparedStatement pstatement = connection.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 
@@ -65,6 +63,7 @@ public class UserModel extends Model{
         pstatement.close();
     }
 
+    // добавление элемента в БД
     @Override
     public void addItem(IData item) throws SQLException {
         User tmp = (User)item;
@@ -84,6 +83,7 @@ public class UserModel extends Model{
     } // addItem
 
 
+    // метод для логина
     public User getUserByNamePassword(String name, String password) throws SQLException{
         User user;
         String sqlRequest = "select * from `users` where `name` = \'" + name + "\' and `password` = \'" + password + "\';";

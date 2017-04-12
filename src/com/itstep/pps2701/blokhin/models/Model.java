@@ -40,11 +40,10 @@ public abstract class Model {
         return connection;
     }
 
-    abstract public IData getItemById(int id) throws SQLException;
-    abstract public List<IData> getItemList() throws SQLException;
-    abstract public void updateItem(IData item) throws SQLException;
-    abstract public void addItem(IData item) throws SQLException;
-
-    abstract protected IData parseItem(ResultSet result) throws SQLException;
+    abstract public IData getItemById(int id) throws SQLException;              // получение элемента из БД по его id
+    abstract public List<IData> getItemList() throws SQLException;              // получение списка элементов из БД
+    abstract public void updateItem(IData item) throws SQLException;            // изменение элемента в БД
+    abstract public void addItem(IData item) throws SQLException;               // добавление элемента в БД
+    abstract protected IData parseItem(ResultSet result) throws SQLException;   // парсинг элемента
 
 }
