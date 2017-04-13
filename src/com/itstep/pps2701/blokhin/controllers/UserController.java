@@ -20,27 +20,43 @@ public class UserController extends Controller {
 
     }
 
-    public void init(JTabbedPane pane) throws SQLException {
+
+
+    public void init(JTabbedPane pane, JFrame frame) throws SQLException {
         model = new UserModel();
         userList = model.getItemList();
+        this.frame = frame;
 
         view = new UsersPanel(pane, "Пользователи", "Работа со списком пользователей", userList, this);
+    } // init
+
+    public void editItemDialog(int id) {
+        try {
+            item = model.getItemById(id);
+
+            view.showEditWindow(item);
+        } catch(Exception ex) {
+            ErrorWindow ew = new ErrorWindow("Ошибка загрузки данных", ex.getMessage());
+        }
+    } // editItemDialog
+
+    @Override
+    public void saveItem() {
+        try {
+            model = new UserModel();
+            model.updateItem(item);
+        } catch(Exception ex) {
+            ErrorWindow ew = new ErrorWindow("Ошибка сохранения данных", ex.getMessage());
+        }
+    } // saveItem
+
+    @Override
+    public IData getItem() {
+        return item;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == view.getEditBtn()) {
-            try {
-                int row = view.getItemsTable().getSelectedRow();
-                int id = (Integer)view.getItemsTable().getValueAt(row, 0);
-
-                model = new UserModel();
-                item = model.getItemById(id);
-
-                view.showEditWindow(item);
-            } catch(Exception ex) {
-                ErrorWindow ew = new ErrorWindow("Ошибка загрузки данных", ex.getMessage());
-            }
-        }
+    public void setItem(IData item) {
+        this.item = item;
     }
 }

@@ -1,11 +1,11 @@
 package com.itstep.pps2701.blokhin.views;
 
 import com.itstep.pps2701.blokhin.controllers.Controller;
-import com.itstep.pps2701.blokhin.controllers.UserController;
 import com.itstep.pps2701.blokhin.data.IData;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.List;
 
 /**
@@ -53,10 +53,19 @@ public abstract class ContentPanel implements IView{
         itemsTable = tableBuilder(itemsList);
 
         editBtn = new JButton("Редактировать");
-        editBtn.addActionListener(controller);
+        editBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(itemsTable.getSelectedRow() >= 0) {
+                    int row = itemsTable.getSelectedRow();
+                    int id = (Integer) itemsTable.getValueAt(row, 0);
+                    controller.editItemDialog(id);
+                }
+            }
+        });
 
         addBtn = new JButton("Добавить");
-        addBtn.addActionListener(controller);
+
 
         itemsTable.setFillsViewportHeight(true);
         itemsTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

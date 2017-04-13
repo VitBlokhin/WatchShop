@@ -22,8 +22,8 @@ public class Main {
             SwingUtilities.invokeLater(()->{
                 MainFrame win = new MainFrame("Магазин часов");
                 try {
-                    uc.init(win.getTabbedPane());
-                    wc.init(win.getTabbedPane());
+                    uc.init(win.getTabbedPane(), win);
+                    wc.init(win.getTabbedPane(), win);
                 } catch (Exception ex) {
                     ErrorWindow ew = new ErrorWindow("Ошибка загрузки данных", ex.getMessage());
                 }

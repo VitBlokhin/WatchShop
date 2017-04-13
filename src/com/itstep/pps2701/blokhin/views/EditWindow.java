@@ -12,10 +12,11 @@ import java.awt.*;
 public abstract class EditWindow extends JDialog{
     protected IData item;
 
+    protected JPanel mainPanel;
     protected JButton acceptBtn, cancelBtn;
 
-    public EditWindow(IData item) {
-        super();
+    public EditWindow(JFrame frame, String title, IData item) {
+        super(frame, title, true);
     }
 
     abstract void buildGUI();

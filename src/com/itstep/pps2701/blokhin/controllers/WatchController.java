@@ -19,15 +19,43 @@ public class WatchController extends Controller {
     public WatchController() {
     }
 
-    public void init(JTabbedPane pane) throws SQLException {
+    public void init(JTabbedPane pane, JFrame frame) throws SQLException {
         model = new WatchModel();
         watchesList = model.getItemList();
 
+        this.frame = frame;
         view = new WatchesPanel(pane, "Часы", "Работа со списком часов", watchesList, this);
     }
 
+    public void editItemDialog(int id) {
+        try {
+            model = new WatchModel();
+            item = model.getItemById(id);
+
+            view.showEditWindow(item);
+        } catch(Exception ex) {
+            ErrorWindow ew = new ErrorWindow("Ошибка загрузки данных", ex.getMessage());
+        }
+    } // editItemDialog
+
     @Override
-    public void actionPerformed(ActionEvent e) {
-        //(UsersPanel)view
+    public void saveItem() {
+        try {
+            model = new WatchModel();
+            model.updateItem(item);
+        } catch(Exception ex) {
+            ErrorWindow ew = new ErrorWindow("Ошибка сохранения данных", ex.getMessage());
+        }
+    } // saveItem
+
+    @Override
+    public IData getItem() {
+        return item;
     }
+
+    @Override
+    public void setItem(IData item) {
+        this.item = item;
+    }
+
 }

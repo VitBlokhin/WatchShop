@@ -1,5 +1,8 @@
 package com.itstep.pps2701.blokhin.system;
 
+import com.itstep.pps2701.blokhin.views.ErrorWindow;
+
+import javax.swing.text.MaskFormatter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,5 +32,15 @@ public class Utils {
 
     public static Connection getConnection(){
         return connection;
+    }
+
+    static public MaskFormatter createFormatter(String s) {
+        MaskFormatter formatter = null;
+        try {
+            formatter = new MaskFormatter(s);
+        } catch (java.text.ParseException ex) {
+            ErrorWindow ew = new ErrorWindow("Ошибка форматирования", ex.getMessage());
+        }
+        return formatter;
     }
 }
