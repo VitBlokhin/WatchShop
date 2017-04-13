@@ -12,8 +12,6 @@ public class MainFrame extends JFrame {
     // JMenuBar menubar;
     // JMenu menu;
     private JTabbedPane tabbedPane;
-    private ContentPanel panel;
-
 
     public MainFrame(String title) throws HeadlessException {
         super(title);

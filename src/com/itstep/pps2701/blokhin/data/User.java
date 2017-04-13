@@ -90,6 +90,7 @@ public class User implements IData {
 
     @Override
     public Object[] toObjects() {
-        return new Object[]{getId(), getName(), getEmail(), getPhone(), getPassword(), isStatus(), isSuperuser()};
+        // Без пароля, т.к. безопасность :) и если будет добавлено шифрование, выводить пароль нет смысла
+        return new Object[]{getId(), getName(), getEmail(), getPhone(), isStatus(), isSuperuser()};
     }
 } // class User

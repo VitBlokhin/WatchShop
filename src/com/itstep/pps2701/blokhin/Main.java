@@ -2,6 +2,7 @@ package com.itstep.pps2701.blokhin;
 
 import com.itstep.pps2701.blokhin.controllers.Session;
 import com.itstep.pps2701.blokhin.controllers.UserController;
+import com.itstep.pps2701.blokhin.controllers.WatchController;
 import com.itstep.pps2701.blokhin.data.IData;
 import com.itstep.pps2701.blokhin.data.User;
 import com.itstep.pps2701.blokhin.models.UserModel;
@@ -44,10 +45,12 @@ public class Main {
             um.disconnect();*/
 
             UserController uc = new UserController();
+            WatchController wc = new WatchController();
 
             SwingUtilities.invokeLater(()->{
                 MainFrame win = new MainFrame("Магазин часов");
                 uc.init(win.getTabbedPane());
+                wc.init(win.getTabbedPane());
             });
 
 

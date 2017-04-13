@@ -3,6 +3,7 @@ package com.itstep.pps2701.blokhin.controllers;
 import com.itstep.pps2701.blokhin.models.IModel;
 import com.itstep.pps2701.blokhin.views.IView;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -13,5 +14,6 @@ public abstract class Controller implements ActionListener {
     protected IView view;
 
 
-
+    @Override
+    abstract public void actionPerformed(ActionEvent e);
 }

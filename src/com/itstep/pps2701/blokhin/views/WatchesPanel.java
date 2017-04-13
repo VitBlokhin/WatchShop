@@ -1,7 +1,6 @@
 package com.itstep.pps2701.blokhin.views;
 
 import com.itstep.pps2701.blokhin.controllers.Controller;
-import com.itstep.pps2701.blokhin.controllers.UserController;
 import com.itstep.pps2701.blokhin.data.IData;
 
 import javax.swing.*;
@@ -10,16 +9,16 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Created by Vit on 12.04.2017.
+ * Created by Vit on 13.04.2017.
  */
-public class UsersPanel extends ContentPanel {
+public class WatchesPanel extends ContentPanel {
 
 
-    public UsersPanel(JTabbedPane tabbedPane, String title, String tip) {
+    public WatchesPanel(JTabbedPane tabbedPane, String title, String tip) {
         super(tabbedPane, title, tip);
     }
 
-    public UsersPanel(JTabbedPane tabbedPane, String title, String tip,  List<IData> dataList, Controller cont) {
+    public WatchesPanel(JTabbedPane tabbedPane, String title, String tip, List<IData> dataList, Controller cont) {
         super(tabbedPane, title, tip,  dataList);
         setController(cont);
     }
@@ -31,25 +30,25 @@ public class UsersPanel extends ContentPanel {
 
     @Override
     final protected JLabel titleBuilder() {
-        return new JLabel("Список пользователей");
+        return new JLabel("Список часов");
     }
 
     @Override
-    final protected JTable tableBuilder(List<IData> userList) {
-        String[] header = {"id", "Имя", "email", "Телефон","Статус", "Админ"};
+    final protected JTable tableBuilder(List<IData> watchesList) {
+        String[] header = {"id", "Марка", "Цена", "Количество", "Видимость", "Производитель", "Тип"};
         DefaultTableModel dfm = new DefaultTableModel(header, 0);
 
-        for(IData item : userList) {
+        for(IData item : watchesList) {
             dfm.addRow(item.toObjects());
         }
         return new JTable(dfm);
     }
 
-    public JTable getUserTable() {
+    public JTable getWatchesTable() {
         return itemsTable;
     }
 
     public JButton getEditBtn() {
         return editBtn;
     }
-} // UsersPanel
+}
