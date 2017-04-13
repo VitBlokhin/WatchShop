@@ -13,11 +13,6 @@ import java.util.List;
  */
 public class WatchesPanel extends ContentPanel {
 
-
-    public WatchesPanel(JTabbedPane tabbedPane, String title, String tip) {
-        super(tabbedPane, title, tip);
-    }
-
     public WatchesPanel(JTabbedPane tabbedPane, String title, String tip, List<IData> dataList, Controller cont) {
         super(tabbedPane, title, tip,  dataList);
         setController(cont);

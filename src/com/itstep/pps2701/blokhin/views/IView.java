@@ -14,5 +14,5 @@ public interface IView {
     JButton getAddBtn();
     JTable getItemsTable();
     void showEditWindow(IData item);
-    void rebuildPanel(List<IData> userList);
+    // void rebuildPanel(List<IData> userList);
 }

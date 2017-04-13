@@ -12,13 +12,8 @@ import java.util.List;
  */
 public class UsersPanel extends ContentPanel {
 
-
-    public UsersPanel(JTabbedPane tabbedPane, String title, String tip) {
-        super(tabbedPane, title, tip);
-    }
-
-    public UsersPanel(JTabbedPane tabbedPane, String title, String tip,  List<IData> dataList, Controller cont) {
-        super(tabbedPane, title, tip,  dataList);
+    public UsersPanel(JTabbedPane tabbedPane, String title, String tip,  List<IData> itemsList, Controller cont) {
+        super(tabbedPane, title, tip,  itemsList);
         setController(cont);
     }
 

@@ -34,15 +34,9 @@ public abstract class ContentPanel implements IView{
         return itemsTable;
     }
 
-    public ContentPanel(JTabbedPane parent, String title, String tip, List<IData> dataList) {
-        rebuildPanel(dataList);
-        this.parent = parent;
-        parent.addTab(title, null,
-                contentPanel, tip);
-    }
 
-    public ContentPanel(JTabbedPane parent, String title, String tip) {
-        buildPanel();
+    public ContentPanel(JTabbedPane parent, String title, String tip, List<IData> itemsList) {
+        buildPanel(itemsList);
         parent = parent;
 
         parent.addTab(title, null,
@@ -50,30 +44,7 @@ public abstract class ContentPanel implements IView{
     } // ContentPanel
 
 
-    protected void buildPanel() {
-        contentPanel = new JPanel(new BorderLayout(5,5));
-        controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
-
-        lblPrompt = titleBuilder();
-
-        itemsTable = new JTable();
-        itemsTable.setGridColor(Color.LIGHT_GRAY);
-
-        editBtn = new JButton("Редактировать");
-        editBtn.addActionListener(controller);
-
-        addBtn = new JButton("Добавить");
-        addBtn.addActionListener(controller);
-
-        controlPanel.add(editBtn);
-        controlPanel.add(addBtn);
-
-        contentPanel.add(lblPrompt, BorderLayout.NORTH);
-        contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER);
-        contentPanel.add(controlPanel, BorderLayout.SOUTH);
-    } // buildPanel
-
-    public void rebuildPanel(List<IData> itemsList){
+    protected void buildPanel(List<IData> itemsList) {
         contentPanel = new JPanel(new BorderLayout(5,5));
         controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
 
@@ -97,7 +68,9 @@ public abstract class ContentPanel implements IView{
         contentPanel.add(lblPrompt, BorderLayout.NORTH);
         contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER);
         contentPanel.add(controlPanel, BorderLayout.SOUTH);
-    } // rebuildPanel
+    } // buildPanel
+
+
 
     abstract protected void setController(Controller cont);
 
