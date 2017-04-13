@@ -36,12 +36,23 @@ public class WatchesPanel extends ContentPanel {
     @Override
     final protected JTable tableBuilder(List<IData> watchesList) {
         String[] header = {"id", "Марка", "Цена", "Количество", "Видимость", "Производитель", "Тип"};
-        DefaultTableModel dfm = new DefaultTableModel(header, 0);
+        DefaultTableModel dfm = new DefaultTableModel(header, 0){
+
+            @Override
+            public boolean isCellEditable(int x, int y) {
+                return false;
+            }
+        };
 
         for(IData item : watchesList) {
             dfm.addRow(item.toObjects());
         }
         return new JTable(dfm);
+    }
+
+    @Override
+    public void showEditWindow(IData item) {
+
     }
 
     public JTable getWatchesTable() {

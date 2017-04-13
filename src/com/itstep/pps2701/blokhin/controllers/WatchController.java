@@ -2,10 +2,12 @@ package com.itstep.pps2701.blokhin.controllers;
 
 import com.itstep.pps2701.blokhin.data.IData;
 import com.itstep.pps2701.blokhin.models.WatchModel;
+import com.itstep.pps2701.blokhin.views.ErrorWindow;
 import com.itstep.pps2701.blokhin.views.WatchesPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -17,16 +19,11 @@ public class WatchController extends Controller {
     public WatchController() {
     }
 
-    public void init(JTabbedPane pane) {
-        try {
-            model = new WatchModel();
-            model.connect("root", "");
-            watchesList = model.getItemList();
+    public void init(JTabbedPane pane) throws SQLException {
+        model = new WatchModel();
+        watchesList = model.getItemList();
 
-            view = new WatchesPanel(pane, "Часы", "Работа со списком часов", watchesList, this);
-        } catch(Exception ex) {
-            view.showErrorWindow("Ошибка загрузки данных", ex.getMessage());
-        }
+        view = new WatchesPanel(pane, "Часы", "Работа со списком часов", watchesList, this);
     }
 
     @Override

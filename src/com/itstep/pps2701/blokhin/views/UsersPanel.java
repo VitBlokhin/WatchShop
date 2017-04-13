@@ -1,12 +1,10 @@
 package com.itstep.pps2701.blokhin.views;
 
 import com.itstep.pps2701.blokhin.controllers.Controller;
-import com.itstep.pps2701.blokhin.controllers.UserController;
 import com.itstep.pps2701.blokhin.data.IData;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -37,12 +35,23 @@ public class UsersPanel extends ContentPanel {
     @Override
     final protected JTable tableBuilder(List<IData> userList) {
         String[] header = {"id", "Имя", "email", "Телефон","Статус", "Админ"};
-        DefaultTableModel dfm = new DefaultTableModel(header, 0);
+        DefaultTableModel dfm = new DefaultTableModel(header, 0){
+
+            @Override
+            public boolean isCellEditable(int x, int y) {
+                return false;
+            }
+        };
 
         for(IData item : userList) {
             dfm.addRow(item.toObjects());
         }
         return new JTable(dfm);
+    }
+
+    @Override
+    public void showEditWindow(IData item) {
+        EditUserWindow ew = new EditUserWindow(item);
     }
 
     public JTable getUserTable() {
@@ -52,4 +61,5 @@ public class UsersPanel extends ContentPanel {
     public JButton getEditBtn() {
         return editBtn;
     }
+
 } // UsersPanel

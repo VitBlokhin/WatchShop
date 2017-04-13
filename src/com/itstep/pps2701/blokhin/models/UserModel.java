@@ -2,6 +2,7 @@ package com.itstep.pps2701.blokhin.models;
 
 import com.itstep.pps2701.blokhin.data.IData;
 import com.itstep.pps2701.blokhin.data.User;
+import com.itstep.pps2701.blokhin.system.Utils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,12 +15,14 @@ import java.util.List;
  */
 public class UserModel extends Model{
 
-    public UserModel() { }
+    public UserModel() {
+        super(Utils.getConnection());
+    }
 
     public User getItemById(int id) throws SQLException{
         User user;
         String sqlRequest = "select * from `users` where `id` = \'" + id + "\';";
-        PreparedStatement pstatement = connection.prepareStatement(sqlRequest);
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 
         if(result.next()){
@@ -34,7 +37,7 @@ public class UserModel extends Model{
         List<IData> userList= new ArrayList<>();
 
         String sqlRequest = "select * from `users`;";
-        PreparedStatement pstatement = connection.prepareStatement(sqlRequest);
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 
         while(result.next()) {
@@ -58,7 +61,7 @@ public class UserModel extends Model{
                 + "\', `status` = \'" + tmpStat
                 + "\', `superuser` = \'" + tmpSup
                 + "\' where `id` = \'" + tmp.getId() + "\';";
-        PreparedStatement pstatement = connection.prepareStatement(sqlUpdate);
+        PreparedStatement pstatement = conn.prepareStatement(sqlUpdate);
         pstatement.executeUpdate();
         pstatement.close();
     }
@@ -77,7 +80,7 @@ public class UserModel extends Model{
                 + "\', \'" + tmpStat
                 + "\', \'" + tmpSup
                 + "\');";
-        PreparedStatement pstatement = connection.prepareStatement(sqlInsert);
+        PreparedStatement pstatement = conn.prepareStatement(sqlInsert);
         pstatement.executeUpdate();
         pstatement.close();
     } // addItem
@@ -87,7 +90,7 @@ public class UserModel extends Model{
     public User getUserByNamePassword(String name, String password) throws SQLException{
         User user;
         String sqlRequest = "select * from `users` where `name` = \'" + name + "\' and `password` = \'" + password + "\';";
-        PreparedStatement pstatement = connection.prepareStatement(sqlRequest);
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 
         if(result.next()){

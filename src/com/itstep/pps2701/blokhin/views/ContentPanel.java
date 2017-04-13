@@ -23,6 +23,17 @@ public abstract class ContentPanel implements IView{
     protected JButton editBtn;
     protected JButton addBtn;
 
+    public JButton getEditBtn() {
+        return editBtn;
+    }
+    public JButton getAddBtn() {
+        return addBtn;
+    }
+
+    public JTable getItemsTable() {
+        return itemsTable;
+    }
+
     public ContentPanel(JTabbedPane parent, String title, String tip, List<IData> dataList) {
         rebuildPanel(dataList);
         this.parent = parent;
@@ -30,9 +41,9 @@ public abstract class ContentPanel implements IView{
                 contentPanel, tip);
     }
 
-    public ContentPanel(JTabbedPane tabbedPane, String title, String tip) {
+    public ContentPanel(JTabbedPane parent, String title, String tip) {
         buildPanel();
-        parent = tabbedPane;
+        parent = parent;
 
         parent.addTab(title, null,
                 contentPanel, tip);
@@ -88,14 +99,9 @@ public abstract class ContentPanel implements IView{
         contentPanel.add(controlPanel, BorderLayout.SOUTH);
     } // rebuildPanel
 
-    public void showErrorWindow(String title, String errorText){
-        ErrorWindow errWin = new ErrorWindow(title, errorText);
-    }
-
-    // abstract protected void buildPanel();
-    // abstract public void rebuildPanel(List<IData> userList);
     abstract protected void setController(Controller cont);
 
     abstract protected JLabel titleBuilder();
     abstract protected JTable tableBuilder(List<IData> itemsList);
+    abstract public void showEditWindow(IData item);
 } // class ContentPanel

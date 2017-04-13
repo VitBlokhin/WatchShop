@@ -10,9 +10,6 @@ import java.util.List;
  * Created by Vit on 12.04.2017.
  */
 public interface IModel {
-    void connect(String username, String password) throws SQLException;
-    void disconnect() throws SQLException;
-    Connection getConnection();
 
     IData getItemById(int id) throws SQLException;              // получение элемента из БД по его id
     List<IData> getItemList() throws SQLException;              // получение списка элементов из БД

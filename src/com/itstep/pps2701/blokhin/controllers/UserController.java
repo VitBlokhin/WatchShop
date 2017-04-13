@@ -1,13 +1,13 @@
 package com.itstep.pps2701.blokhin.controllers;
 
 import com.itstep.pps2701.blokhin.data.IData;
-import com.itstep.pps2701.blokhin.data.User;
 import com.itstep.pps2701.blokhin.models.UserModel;
+import com.itstep.pps2701.blokhin.views.ErrorWindow;
 import com.itstep.pps2701.blokhin.views.UsersPanel;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,20 +20,27 @@ public class UserController extends Controller {
 
     }
 
-    public void init(JTabbedPane pane) {
-        try {
-            model = new UserModel();
-            model.connect("root", "");
-            userList = model.getItemList();
+    public void init(JTabbedPane pane) throws SQLException {
+        model = new UserModel();
+        userList = model.getItemList();
 
-            view = new UsersPanel(pane, "Пользователи", "Работа со списком пользователей", userList, this);
-        } catch(Exception ex) {
-            view.showErrorWindow("Ошибка загрузки данных", ex.getMessage());
-        }
+        view = new UsersPanel(pane, "Пользователи", "Работа со списком пользователей", userList, this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //(UsersPanel)view
+        if(e.getSource() == view.getEditBtn()) {
+            try {
+                int row = view.getItemsTable().getSelectedRow();
+                int id = (Integer)view.getItemsTable().getValueAt(row, 0);
+
+                model = new UserModel();
+                item = model.getItemById(id);
+
+                view.showEditWindow(item);
+            } catch(Exception ex) {
+                ErrorWindow ew = new ErrorWindow("Ошибка загрузки данных", ex.getMessage());
+            }
+        }
     }
 }

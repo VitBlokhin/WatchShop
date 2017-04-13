@@ -12,32 +12,11 @@ import java.util.List;
  * Created by Vit on 12.04.2017.
  */
 public abstract class Model implements IModel{
-    private String connectionAddress = "localhost";
-    private String connectionBase = "watch_shop";
-    private int connectionPort = 3306;
 
-    protected Connection connection;
+    protected Connection conn;
 
-    public Model() { }
-
-    // подключение к БД
-    public void connect(String username, String password) throws SQLException{
-        connection = DriverManager.getConnection(
-                "jdbc:mysql://"
-                        + connectionAddress + ":" + connectionPort + "/" + connectionBase
-                        + "?autoReconnect=true&useSSL=false",
-                username,
-                password);
-    } // connect
-
-    // отключение от БД
-    public void disconnect() throws SQLException{
-        connection.close();
-    } // disconnect
-
-    // получить соединение
-    public Connection getConnection() {
-        return connection;
+    public Model(Connection conn) {
+        this.conn = conn;
     }
 
     abstract public IData getItemById(int id) throws SQLException;              // получение элемента из БД по его id

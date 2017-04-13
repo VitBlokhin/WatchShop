@@ -2,6 +2,7 @@ package com.itstep.pps2701.blokhin.models;
 
 import com.itstep.pps2701.blokhin.data.IData;
 import com.itstep.pps2701.blokhin.data.WatchProducer;
+import com.itstep.pps2701.blokhin.system.Utils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,13 +16,14 @@ import java.util.List;
 public class ProducerModel  extends Model {
 
     public ProducerModel() {
+        super(Utils.getConnection());
     }
 
     @Override
     public WatchProducer getItemById(int id) throws SQLException {
         WatchProducer watchProducer;
         String sqlRequest = "select * from `producers` where `id` = \'" + id + "\';";
-        PreparedStatement pstatement = connection.prepareStatement(sqlRequest);
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 
         if(result.next()){
@@ -37,7 +39,7 @@ public class ProducerModel  extends Model {
         List<IData> producerList = new ArrayList<>();
 
         String sqlRequest = "select * from `producers`;";
-        PreparedStatement pstatement = connection.prepareStatement(sqlRequest);
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 
         while(result.next()) {
@@ -55,7 +57,7 @@ public class ProducerModel  extends Model {
                 + " set `name` = \'" + tmp.getName()
                 + "\', `country` = \'" + tmp.getCountry()
                 + "\' where `id` = \'" + tmp.getId() + "\';";
-        PreparedStatement pstatement = connection.prepareStatement(sqlUpdate);
+        PreparedStatement pstatement = conn.prepareStatement(sqlUpdate);
         pstatement.executeUpdate();
         pstatement.close();
     } // updateItem
@@ -67,7 +69,7 @@ public class ProducerModel  extends Model {
                 + " values (\'" + tmp.getName()
                 + "\', \'" + tmp.getCountry()
                 + "\');";
-        PreparedStatement pstatement = connection.prepareStatement(sqlInsert);
+        PreparedStatement pstatement = conn.prepareStatement(sqlInsert);
         pstatement.executeUpdate();
         pstatement.close();
     } // addItem
