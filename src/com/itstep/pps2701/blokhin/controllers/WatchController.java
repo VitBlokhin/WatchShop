@@ -64,15 +64,4 @@ public class WatchController extends Controller {
             ErrorWindow ew = new ErrorWindow("Ошибка загрузки данных", ex.getMessage());
         }
     }
-
-    public Object[] watchToObjects(IData watch){
-        Object[] obj = watch.toObjects();
-        for(IData producer : producerList) {
-            if(((WatchProducer) producer).getId() == (Integer)obj[5]) obj[5] = ((WatchProducer)producer).getName();
-        }
-        for(IData type : watchTypeList) {
-            if(((WatchType)type).getId() == (Integer)obj[6]) obj[6] = ((WatchType)type).getTypename();
-        }
-        return obj;
-    }
 }

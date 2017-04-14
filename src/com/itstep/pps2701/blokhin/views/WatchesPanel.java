@@ -43,9 +43,8 @@ public class WatchesPanel extends ContentPanel {
             }
         };
 
-        //TODO: здесь разобраться, почему вылетает ошибка и сделать вывод названий производителей и типов вместо их id
+        //TODO: вывод названий производителей и типов вместо их id
         for(IData item : watchesList) {
-            //Object[] obj = ((WatchController)controller).watchToObjects(item);
             dfm.addRow(item.toObjects());
         }
         return new JTable(dfm);
