@@ -24,10 +24,6 @@ public class UsersPanel extends ContentPanel {
         setController(cont);
     }
 
-    @Override
-    final protected void setController(Controller cont) {
-        controller = cont;
-    }
 
     @Override
     final protected JLabel titleBuilder() {
@@ -38,7 +34,6 @@ public class UsersPanel extends ContentPanel {
     final protected JTable tableBuilder(List<IData> userList) {
         String[] header = {"id", "Имя", "email", "Телефон","Работает", "Админ"};
         DefaultTableModel dfm = new DefaultTableModel(header, 0){
-
             @Override
             public boolean isCellEditable(int x, int y) {
                 return false;
@@ -52,25 +47,19 @@ public class UsersPanel extends ContentPanel {
     }
 
     @Override
-    public void showEditWindow(IData item) {
-        //EditUserWindow ew = new EditUserWindow(controller.getMainframe(), "Редактировать", item);
-        JDialog editDialog = createEditDialog("Редактировать", true, item);
-        editDialog.setVisible(true);
-    }
-
-    private JDialog createEditDialog(String title, boolean modal, IData item){
+    final protected JDialog createEditDialog(String title, boolean modal, IData item){
 
         JButton acceptBtn, cancelBtn;
 
-        JLabel lblName, lblEmail, lblPhone;
-        JTextField txtName, txtEmail;
+        JLabel lblName, lblEmail, lblPhone, lblPassword;
+        JTextField txtName, txtEmail, txtPassword;
         JFormattedTextField ftxtPhone;
         JCheckBox chkStatus, chkAdmin;
 
         JDialog dialog = new JDialog(controller.getMainframe(), title, modal);
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        dialog.setSize(300, 250);
+        dialog.setSize(300, 300);
         dialog.setLocation(350,300);
         dialog.setResizable(false);
 
@@ -81,15 +70,15 @@ public class UsersPanel extends ContentPanel {
         lblName = new JLabel("Имя");
         lblEmail = new JLabel("Email");
         lblPhone = new JLabel("Телефон");
+        lblPassword = new JLabel("Пароль");
 
         txtName = new JTextField(((User) item).getName());
         txtEmail = new JTextField(((User) item).getEmail());
         ftxtPhone = new JFormattedTextField(Utils.createFormatter("+###-##-###-####"));
         ftxtPhone.setText(((User) item).getPhone());
         ftxtPhone.setColumns(16);
+        txtPassword = new JTextField(((User)item).getPassword());
 
-
-        // TODO: добавить обновление таблицы, если изменились данные
         chkStatus = new JCheckBox("Работает", ((User) item).isStatus());
         chkAdmin = new JCheckBox("Админ", ((User) item).isSuperuser());
 
@@ -101,15 +90,25 @@ public class UsersPanel extends ContentPanel {
                         txtName.getText(),
                         txtEmail.getText(),
                         ftxtPhone.getText(),
-                        ((User) item).getPassword(),
+                        txtPassword.getText(),
                         chkStatus.isSelected(),
                         chkAdmin.isSelected()));
                 controller.saveItem();
 
+                controller.updateItemsList();
+
                 dialog.setVisible(false);
+                dialog.dispose();
             }
         });
         cancelBtn = new JButton("Отмена");
+        cancelBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
+        });
 
         controlPanel.add(acceptBtn);
         controlPanel.add(cancelBtn);
@@ -120,6 +119,8 @@ public class UsersPanel extends ContentPanel {
         contentPanel.add(txtEmail);
         contentPanel.add(lblPhone);
         contentPanel.add(ftxtPhone);
+        contentPanel.add(lblPassword);
+        contentPanel.add(txtPassword);
         contentPanel.add(chkStatus);
         contentPanel.add(chkAdmin);
 
@@ -127,16 +128,94 @@ public class UsersPanel extends ContentPanel {
         dialog.add(controlPanel, BorderLayout.SOUTH);
 
         return dialog;
-    }
+    } // createEditDialog
 
-    public JTable getUserTable() {
-        return itemsTable;
-    }
+    @Override
+    final protected JDialog createAddDialog(String title, boolean modal){
+
+        JButton acceptBtn, cancelBtn;
+
+        JLabel lblName, lblEmail, lblPhone, lblPassword;
+        JTextField txtName, txtEmail, txtPassword;  // ввод пароля не скрываем
+        JFormattedTextField ftxtPhone;
+        JCheckBox chkStatus, chkAdmin;
+
+        JDialog dialog = new JDialog(controller.getMainframe(), title, modal);
+        dialog.setLayout(new BorderLayout(5,5));
+        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        dialog.setSize(300, 300);
+        dialog.setLocation(350,300);
+        dialog.setResizable(false);
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
+
+        lblName = new JLabel("Имя");
+        lblEmail = new JLabel("Email");
+        lblPhone = new JLabel("Телефон");
+        lblPassword = new JLabel("Пароль");
+
+        txtName = new JTextField();
+        txtEmail = new JTextField();
+        ftxtPhone = new JFormattedTextField(Utils.createFormatter("+###-##-###-####"));
+        ftxtPhone.setColumns(16);
+        txtPassword = new JTextField();
+
+        chkStatus = new JCheckBox("Работает");
+        chkAdmin = new JCheckBox("Админ");
+
+        acceptBtn = new JButton("Сохранить");
+        acceptBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                User user = new User(txtName.getText(),
+                        txtEmail.getText(),
+                        ftxtPhone.getText(),
+                        txtPassword.getText(),
+                        chkStatus.isSelected(),
+                        chkAdmin.isSelected());
+                controller.saveNewItem(user);
+
+                controller.updateItemsList();
+
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
+        });
+
+        cancelBtn = new JButton("Отмена");
+        cancelBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
+        });
+
+        controlPanel.add(acceptBtn);
+        controlPanel.add(cancelBtn);
+
+        contentPanel.add(lblName);
+        contentPanel.add(txtName);
+        contentPanel.add(lblEmail);
+        contentPanel.add(txtEmail);
+        contentPanel.add(lblPhone);
+        contentPanel.add(ftxtPhone);
+        contentPanel.add(lblPassword);
+        contentPanel.add(txtPassword);
+        contentPanel.add(chkStatus);
+        contentPanel.add(chkAdmin);
+
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.add(controlPanel, BorderLayout.SOUTH);
+
+        return dialog;
+    } // createAddDialog
+
 
     public JButton getEditBtn() {
         return editBtn;
     }
-
-
 
 } // UsersPanel

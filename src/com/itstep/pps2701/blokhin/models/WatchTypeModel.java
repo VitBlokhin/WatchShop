@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class WatchTypeModel  extends Model {
 
-    public WatchTypeModel(Connection conn) {
+    public WatchTypeModel() {
         super(Utils.getConnection());
     }
 

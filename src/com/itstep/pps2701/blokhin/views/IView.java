@@ -10,9 +10,7 @@ import java.util.List;
  */
 public interface IView {
 
-    JButton getEditBtn();
-    JButton getAddBtn();
-    JTable getItemsTable();
-    void showEditWindow(IData item);
-    // void rebuildPanel(List<IData> userList);
+    void showEditDialog(IData item);
+    void showAddDialog();
+    void updateItemsTable(List<IData> itemsList);
 }

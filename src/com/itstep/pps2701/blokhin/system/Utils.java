@@ -38,6 +38,7 @@ public class Utils {
         MaskFormatter formatter = null;
         try {
             formatter = new MaskFormatter(s);
+            formatter.setPlaceholderCharacter('0');
         } catch (java.text.ParseException ex) {
             ErrorWindow ew = new ErrorWindow("Ошибка форматирования", ex.getMessage());
         }

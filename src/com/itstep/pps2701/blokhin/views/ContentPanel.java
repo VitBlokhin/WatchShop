@@ -2,6 +2,7 @@ package com.itstep.pps2701.blokhin.views;
 
 import com.itstep.pps2701.blokhin.controllers.Controller;
 import com.itstep.pps2701.blokhin.data.IData;
+import jdk.nashorn.internal.scripts.JD;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,15 +24,8 @@ public abstract class ContentPanel implements IView{
     protected JButton editBtn;
     protected JButton addBtn;
 
-    public JButton getEditBtn() {
-        return editBtn;
-    }
-    public JButton getAddBtn() {
-        return addBtn;
-    }
-
-    public JTable getItemsTable() {
-        return itemsTable;
+    protected void setController(Controller cont) {
+        controller = cont;
     }
 
 
@@ -56,16 +50,22 @@ public abstract class ContentPanel implements IView{
         editBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(itemsTable.getSelectedRow() >= 0) {
-                    int row = itemsTable.getSelectedRow();
+                int row = itemsTable.getSelectedRow();
+                if(row >= 0) {
                     int id = (Integer) itemsTable.getValueAt(row, 0);
-                    controller.editItemDialog(id);
+                    controller.setItemById(id);
+                    controller.editItemDialog();
                 }
             }
         });
 
         addBtn = new JButton("Добавить");
-
+        addBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.addItemDialog();
+            }
+        });
 
         itemsTable.setFillsViewportHeight(true);
         itemsTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -80,10 +80,28 @@ public abstract class ContentPanel implements IView{
     } // buildPanel
 
 
+    public void updateItemsTable(List<IData> itemsList){
+        int index = 0;
+        for(int i = 0; i < contentPanel.getComponentCount(); i++){
+            if(contentPanel.getComponent(i).equals(itemsTable)) index = i;
+        }
+        itemsTable = tableBuilder(itemsList);
+        contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER, index);
+    } // updateItemsTable
 
-    abstract protected void setController(Controller cont);
+    public void showEditDialog(IData item) {
+        JDialog editDialog = createEditDialog("Редактировать", true, item);
+        editDialog.setVisible(true);
+    } // showEditDialog
+
+    public void showAddDialog() {
+        JDialog addDialog = createAddDialog("Добавить", true);
+        addDialog.setVisible(true);
+    } // showAddDialog
 
     abstract protected JLabel titleBuilder();
     abstract protected JTable tableBuilder(List<IData> itemsList);
-    abstract public void showEditWindow(IData item);
+    abstract protected JDialog createEditDialog(String name, boolean modal, IData item);
+    abstract protected JDialog createAddDialog(String title, boolean modal);
+
 } // class ContentPanel

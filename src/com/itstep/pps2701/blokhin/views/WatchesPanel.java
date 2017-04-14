@@ -19,11 +19,6 @@ public class WatchesPanel extends ContentPanel {
     }
 
     @Override
-    final protected void setController(Controller cont) {
-        controller = cont;
-    }
-
-    @Override
     final protected JLabel titleBuilder() {
         return new JLabel("Список часов");
     }
@@ -46,8 +41,13 @@ public class WatchesPanel extends ContentPanel {
     }
 
     @Override
-    public void showEditWindow(IData item) {
+    protected JDialog createEditDialog(String name, boolean modal, IData item) {
+        return null;
+    }
 
+    @Override
+    protected JDialog createAddDialog(String title, boolean modal) {
+        return null;
     }
 
     public JTable getWatchesTable() {
