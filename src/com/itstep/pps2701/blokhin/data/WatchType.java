@@ -31,7 +31,7 @@ public class WatchType implements IData {
 
     @Override
     public String toString() {
-        return "WatchType{" + "id=" + id + ", typename=" + typename + '}';
+        return typename;
     } // toString
 
     @Override

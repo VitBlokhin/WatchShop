@@ -213,9 +213,4 @@ public class UsersPanel extends ContentPanel {
         return dialog;
     } // createAddDialog
 
-
-    public JButton getEditBtn() {
-        return editBtn;
-    }
-
 } // UsersPanel

@@ -42,7 +42,7 @@ public class WatchProducer implements IData{
 
     @Override
     public String toString() {
-        return "WatchProducer{" + "id=" + id + ", name='" + name + '\'' + ", country='" + country + '\'' + '}';
+        return name + ", " + country;
     } // toString
 
     @Override
