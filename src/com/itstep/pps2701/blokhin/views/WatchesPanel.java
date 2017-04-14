@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class WatchesPanel extends ContentPanel {
 
-    public WatchesPanel(JTabbedPane tabbedPane, String title, String tip, List<IData> dataList, Controller cont) {
-        super(tabbedPane, title, tip,  dataList);
+    public WatchesPanel(JTabbedPane tabbedPane, String title, String tip, List<IData> itemList, Controller cont) {
+        super(tabbedPane, title, tip,  itemList);
         setController(cont);
     }
 
@@ -50,11 +50,4 @@ public class WatchesPanel extends ContentPanel {
         return null;
     }
 
-    public JTable getWatchesTable() {
-        return itemsTable;
-    }
-
-    public JButton getEditBtn() {
-        return editBtn;
-    }
 }
