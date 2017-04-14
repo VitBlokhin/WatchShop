@@ -50,6 +50,7 @@ public class WatchesPanel extends ContentPanel {
         return new JTable(dfm);
     }
 
+
     @Override
     final protected JDialog createEditDialog(String title, boolean modal, IData item){
 
