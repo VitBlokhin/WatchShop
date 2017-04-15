@@ -22,11 +22,6 @@ public class ProducersPanel extends ContentPanel {
     }
 
     @Override
-    final protected JLabel titleBuilder() {
-        return new JLabel("Типы часов");
-    }
-
-    @Override
     final protected JTable tableBuilder(List<IData> typesList) {
         String[] header = {"id", "Производитель", "Страна"};
         DefaultTableModel dfm = new DefaultTableModel(header, 0){

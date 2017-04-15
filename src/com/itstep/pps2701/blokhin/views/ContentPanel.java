@@ -19,7 +19,6 @@ public abstract class ContentPanel implements IView{
     protected JPanel contentPanel;
     protected JPanel controlPanel;
 
-    protected JLabel lblPrompt;
     protected JTable itemsTable;
     protected JButton editBtn;
     protected JButton addBtn;
@@ -41,8 +40,6 @@ public abstract class ContentPanel implements IView{
     protected void buildPanel(List<IData> itemsList) {
         contentPanel = new JPanel(new BorderLayout(5,5));
         controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
-
-        lblPrompt = titleBuilder();
 
         itemsTable = tableBuilder(itemsList);
 
@@ -74,7 +71,6 @@ public abstract class ContentPanel implements IView{
         controlPanel.add(editBtn);
         controlPanel.add(addBtn);
 
-        contentPanel.add(lblPrompt, BorderLayout.NORTH);
         contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER);
         contentPanel.add(controlPanel, BorderLayout.SOUTH);
     } // buildPanel
@@ -99,7 +95,6 @@ public abstract class ContentPanel implements IView{
         addDialog.setVisible(true);
     } // showAddDialog
 
-    abstract protected JLabel titleBuilder();
     abstract protected JTable tableBuilder(List<IData> itemsList);
     abstract protected JDialog createEditDialog(String name, boolean modal, IData item);
     abstract protected JDialog createAddDialog(String title, boolean modal);

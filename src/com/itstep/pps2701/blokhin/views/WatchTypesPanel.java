@@ -21,11 +21,6 @@ public class WatchTypesPanel extends ContentPanel {
     }
 
     @Override
-    final protected JLabel titleBuilder() {
-        return new JLabel("Типы часов");
-    }
-
-    @Override
     final protected JTable tableBuilder(List<IData> typesList) {
         String[] header = {"id", "Тип"};
         DefaultTableModel dfm = new DefaultTableModel(header, 0){

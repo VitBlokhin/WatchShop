@@ -74,7 +74,7 @@ public class SessionController extends Controller{
             currentUser = null;
             Utils.disconnect();
             frame.dispose();
-            frame = new MainFrame("Магазин часов");
+            createMainFrame();
         } catch(Exception ex) {
             frame.showErrorDialog("Потеря связи с БД", ex.getMessage());
         }

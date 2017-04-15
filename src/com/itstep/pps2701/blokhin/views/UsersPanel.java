@@ -24,12 +24,6 @@ public class UsersPanel extends ContentPanel {
         setController(cont);
     }
 
-
-    @Override
-    final protected JLabel titleBuilder() {
-        return new JLabel("Список пользователей");
-    }
-
     @Override
     final protected JTable tableBuilder(List<IData> userList) {
         String[] header = {"id", "Имя", "email", "Телефон","Работает", "Админ"};
