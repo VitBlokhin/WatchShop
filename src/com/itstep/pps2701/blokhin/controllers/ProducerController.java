@@ -16,6 +16,6 @@ public class ProducerController extends Controller {
         model = new ProducerModel();
         itemList = model.getItemList();
         this.frame = frame;
-        view = new ProducersPanel(pane, "Производители", "Работа с производителями", itemList, this);
+        view = new ProducersPanel(pane, "Производители", "Работа с производителями", this);
     } // init
 }

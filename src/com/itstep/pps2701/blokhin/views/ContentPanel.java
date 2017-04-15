@@ -15,7 +15,6 @@ import java.util.List;
 public abstract class ContentPanel implements IView{
     protected Controller controller;
 
-    protected JTabbedPane parent;
     protected JPanel contentPanel;
     protected JPanel controlPanel;
 
@@ -28,20 +27,20 @@ public abstract class ContentPanel implements IView{
     }
 
 
-    public ContentPanel(JTabbedPane parent, String title, String tip, List<IData> itemsList) {
-        buildPanel(itemsList);
-        parent = parent;
+    public ContentPanel(JTabbedPane parent, String title, String tip, Controller cont) {
+        this.controller = cont;
+        buildPanel();
 
         parent.addTab(title, null,
                 contentPanel, tip);
     } // ContentPanel
 
 
-    protected void buildPanel(List<IData> itemsList) {
+    protected void buildPanel() {
         contentPanel = new JPanel(new BorderLayout(5,5));
         controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
 
-        itemsTable = tableBuilder(itemsList);
+        itemsTable = tableBuilder();
 
         editBtn = new JButton("Редактировать");
         editBtn.addActionListener(new AbstractAction() {
@@ -76,12 +75,12 @@ public abstract class ContentPanel implements IView{
     } // buildPanel
 
 
-    public void updateItemsTable(List<IData> itemsList){
+    public void updateItemsTable(){
         int index = 0;
         for(int i = 0; i < contentPanel.getComponentCount(); i++){
             if(contentPanel.getComponent(i).equals(itemsTable)) index = i;
         }
-        itemsTable = tableBuilder(itemsList);
+        itemsTable = tableBuilder();
         contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER, index);
     } // updateItemsTable
 
@@ -95,7 +94,7 @@ public abstract class ContentPanel implements IView{
         addDialog.setVisible(true);
     } // showAddDialog
 
-    abstract protected JTable tableBuilder(List<IData> itemsList);
+    abstract protected JTable tableBuilder();
     abstract protected JDialog createEditDialog(String name, boolean modal, IData item);
     abstract protected JDialog createAddDialog(String title, boolean modal);
 

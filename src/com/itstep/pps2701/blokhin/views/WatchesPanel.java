@@ -20,13 +20,12 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  */
 public class WatchesPanel extends ContentPanel {
 
-    public WatchesPanel(JTabbedPane tabbedPane, String title, String tip, List<IData> itemList, Controller cont) {
-        super(tabbedPane, title, tip,  itemList);
-        setController(cont);
+    public WatchesPanel(JTabbedPane tabbedPane, String title, String tip, Controller cont) {
+        super(tabbedPane, title, tip,  cont);
     }
 
     @Override
-    final protected JTable tableBuilder(List<IData> watchesList) {
+    final protected JTable tableBuilder() {
         String[] header = {"id", "Марка", "Цена", "Количество", "Видимость", "Производитель", "Тип"};
         DefaultTableModel dfm = new DefaultTableModel(header, 0){
 
@@ -36,9 +35,8 @@ public class WatchesPanel extends ContentPanel {
             }
         };
 
-        //TODO: вывод названий производителей и типов вместо их id
-        for(IData item : watchesList) {
-            dfm.addRow(item.toObjects());
+        for(Object[] objects : controller.getItemObjectsList()) {
+            dfm.addRow(objects);
         }
         return new JTable(dfm);
     }
@@ -59,7 +57,7 @@ public class WatchesPanel extends ContentPanel {
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setSize(300, 320);
-        dialog.setLocation(350,300);
+        dialog.setLocationRelativeTo(dialog.getOwner());
         dialog.setResizable(false);
 
         JPanel contentPanel = new JPanel();
@@ -155,7 +153,7 @@ public class WatchesPanel extends ContentPanel {
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setSize(300, 320);
-        dialog.setLocation(350,300);
+        dialog.setLocationRelativeTo(dialog.getOwner());
         dialog.setResizable(false);
 
         JPanel contentPanel = new JPanel();

@@ -12,5 +12,5 @@ public interface IView {
 
     void showEditDialog(IData item);
     void showAddDialog();
-    void updateItemsTable(List<IData> itemsList);
+    void updateItemsTable();
 }

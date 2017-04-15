@@ -104,7 +104,7 @@ public class MainFrame extends JFrame {
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setSize(300, 200);
-        dialog.setLocation(350,300);
+        dialog.setLocationRelativeTo(dialog.getOwner());
         dialog.setResizable(false);
 
         JPanel contentPanel = new JPanel();

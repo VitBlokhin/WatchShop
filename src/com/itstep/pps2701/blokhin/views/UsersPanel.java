@@ -19,24 +19,29 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  */
 public class UsersPanel extends ContentPanel {
 
-    public UsersPanel(JTabbedPane tabbedPane, String title, String tip,  List<IData> itemsList, Controller cont) {
-        super(tabbedPane, title, tip,  itemsList);
-        setController(cont);
+    public UsersPanel(JTabbedPane tabbedPane, String title, String tip, Controller cont) {
+        super(tabbedPane, title, tip, cont);
+        // setController(cont);
     }
 
     @Override
-    final protected JTable tableBuilder(List<IData> userList) {
+    final protected JTable tableBuilder() {
         String[] header = {"id", "Имя", "email", "Телефон","Работает", "Админ"};
         DefaultTableModel dfm = new DefaultTableModel(header, 0){
+
             @Override
             public boolean isCellEditable(int x, int y) {
                 return false;
             }
         };
 
-        for(IData item : userList) {
-            dfm.addRow(item.toObjects());
+        for(Object[] objects : controller.getItemObjectsList()) {
+            dfm.addRow(objects);
         }
+
+        /*for(IData item : userList) {
+            dfm.addRow(item.toObjects());
+        }*/
         return new JTable(dfm);
     }
 
@@ -54,7 +59,7 @@ public class UsersPanel extends ContentPanel {
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setSize(300, 300);
-        dialog.setLocation(350,300);
+        dialog.setLocationRelativeTo(dialog.getOwner());
         dialog.setResizable(false);
 
         JPanel contentPanel = new JPanel();
@@ -80,7 +85,7 @@ public class UsersPanel extends ContentPanel {
         acceptBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setItem(new User(((User)item).getId(),
+                controller.setItem(new User(item.getId(),
                         txtName.getText(),
                         txtEmail.getText(),
                         ftxtPhone.getText(),
@@ -138,7 +143,7 @@ public class UsersPanel extends ContentPanel {
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setSize(300, 300);
-        dialog.setLocation(350,300);
+        dialog.setLocationRelativeTo(dialog.getOwner());
         dialog.setResizable(false);
 
         JPanel contentPanel = new JPanel();

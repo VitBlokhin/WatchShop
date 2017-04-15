@@ -16,13 +16,12 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  * Created by Vit on 14.04.2017.
  */
 public class ProducersPanel extends ContentPanel {
-    public ProducersPanel(JTabbedPane pane, String title, String tip, List<IData> itemList, Controller cont) {
-        super(pane, title, tip,  itemList);
-        setController(cont);
+    public ProducersPanel(JTabbedPane pane, String title, String tip, Controller cont) {
+        super(pane, title, tip,  cont);
     }
 
     @Override
-    final protected JTable tableBuilder(List<IData> typesList) {
+    final protected JTable tableBuilder() {
         String[] header = {"id", "Производитель", "Страна"};
         DefaultTableModel dfm = new DefaultTableModel(header, 0){
 
@@ -32,8 +31,8 @@ public class ProducersPanel extends ContentPanel {
             }
         };
 
-        for(IData item : typesList) {
-            dfm.addRow(item.toObjects());
+        for(Object[] objects : controller.getItemObjectsList()) {
+            dfm.addRow(objects);
         }
         return new JTable(dfm);
     }
@@ -49,7 +48,7 @@ public class ProducersPanel extends ContentPanel {
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setSize(220, 200);
-        dialog.setLocation(350,300);
+        dialog.setLocationRelativeTo(dialog.getOwner());
         dialog.setResizable(false);
 
         JPanel contentPanel = new JPanel();
@@ -65,7 +64,7 @@ public class ProducersPanel extends ContentPanel {
         acceptBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setItem(new WatchProducer(((WatchProducer)item).getId(),
+                controller.setItem(new WatchProducer(item.getId(),
                         txtName.getText(), txtCountry.getText()));
                 controller.saveItem();
 
@@ -109,7 +108,7 @@ public class ProducersPanel extends ContentPanel {
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setSize(220, 200);
-        dialog.setLocation(350,300);
+        dialog.setLocationRelativeTo(dialog.getOwner());
         dialog.setResizable(false);
 
         JPanel contentPanel = new JPanel();

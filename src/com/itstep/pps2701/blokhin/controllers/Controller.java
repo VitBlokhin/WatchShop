@@ -2,11 +2,11 @@ package com.itstep.pps2701.blokhin.controllers;
 
 import com.itstep.pps2701.blokhin.data.IData;
 import com.itstep.pps2701.blokhin.models.IModel;
-import com.itstep.pps2701.blokhin.views.ErrorWindow;
 import com.itstep.pps2701.blokhin.views.IView;
 import com.itstep.pps2701.blokhin.views.MainFrame;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,10 +75,26 @@ public abstract class Controller {
         try {
             itemList = model.getItemList();
 
-            view.updateItemsTable(itemList);
+            view.updateItemsTable();
         } catch(Exception ex) {
             frame.showErrorDialog("Ошибка обновления данных", ex.getMessage());
         }
     } // updateItemsList
+
+    public List<Object[]> getItemObjectsList(){
+        try {
+            itemList = model.getItemList();
+
+            List<Object[]> objectList = new ArrayList<>();
+            for(IData item : itemList) {
+                objectList.add(item.toObjects());
+            }
+
+            return objectList;
+        } catch(Exception ex) {
+            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
+            return null;
+        }
+    } // getItemObjectsList
 }
 

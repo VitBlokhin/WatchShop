@@ -15,13 +15,12 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  * Created by Vit on 14.04.2017.
  */
 public class WatchTypesPanel extends ContentPanel {
-    public WatchTypesPanel(JTabbedPane pane, String title, String tip, List<IData> itemList, Controller cont) {
-        super(pane, title, tip,  itemList);
-        setController(cont);
+    public WatchTypesPanel(JTabbedPane pane, String title, String tip, Controller cont) {
+        super(pane, title, tip,  cont);
     }
 
     @Override
-    final protected JTable tableBuilder(List<IData> typesList) {
+    final protected JTable tableBuilder() {
         String[] header = {"id", "Тип"};
         DefaultTableModel dfm = new DefaultTableModel(header, 0){
 
@@ -31,8 +30,8 @@ public class WatchTypesPanel extends ContentPanel {
             }
         };
 
-        for(IData item : typesList) {
-            dfm.addRow(item.toObjects());
+        for(Object[] objects : controller.getItemObjectsList()) {
+            dfm.addRow(objects);
         }
         return new JTable(dfm);
     }
@@ -48,7 +47,7 @@ public class WatchTypesPanel extends ContentPanel {
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setSize(220, 120);
-        dialog.setLocation(350,300);
+        dialog.setLocationRelativeTo(dialog.getOwner());
         dialog.setResizable(false);
 
         JPanel contentPanel = new JPanel();
@@ -62,7 +61,7 @@ public class WatchTypesPanel extends ContentPanel {
         acceptBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setItem(new WatchType(((WatchType)item).getId(),
+                controller.setItem(new WatchType(item.getId(),
                         txtName.getText()));
                 controller.saveItem();
 
@@ -104,7 +103,7 @@ public class WatchTypesPanel extends ContentPanel {
         dialog.setLayout(new BorderLayout(5,5));
         dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setSize(220, 120);
-        dialog.setLocation(350,300);
+        dialog.setLocationRelativeTo(dialog.getOwner());
         dialog.setResizable(false);
 
         JPanel contentPanel = new JPanel();

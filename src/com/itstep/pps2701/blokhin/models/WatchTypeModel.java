@@ -21,7 +21,7 @@ public class WatchTypeModel  extends Model {
     }
 
     @Override
-    public IData getItemById(int id) throws SQLException {
+    public WatchType getItemById(int id) throws SQLException {
         WatchType watchType;
         String sqlRequest = "select * from `watch_types` where `id` = \'" + id + "\';";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);

@@ -22,6 +22,6 @@ public class UserController extends Controller {
         itemList = model.getItemList();
         this.frame = frame;
 
-        view = new UsersPanel(pane, "Пользователи", "Работа со списком пользователей", itemList, this);
+        view = new UsersPanel(pane, "Пользователи", "Работа со списком пользователей", this);
     } // init
 }

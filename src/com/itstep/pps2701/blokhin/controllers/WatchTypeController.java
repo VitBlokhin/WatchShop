@@ -18,6 +18,6 @@ public class WatchTypeController extends Controller {
         model = new WatchTypeModel();
         itemList = model.getItemList();
         this.frame = frame;
-        view = new WatchTypesPanel(pane, "Типы часов", "Работа с типами часов", itemList, this);
+        view = new WatchTypesPanel(pane, "Типы часов", "Работа с типами часов", this);
     } // init
 }
