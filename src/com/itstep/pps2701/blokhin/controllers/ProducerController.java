@@ -1,6 +1,7 @@
 package com.itstep.pps2701.blokhin.controllers;
 
 import com.itstep.pps2701.blokhin.models.ProducerModel;
+import com.itstep.pps2701.blokhin.views.MainFrame;
 import com.itstep.pps2701.blokhin.views.ProducersPanel;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
  */
 public class ProducerController extends Controller {
 
-    public void init(JTabbedPane pane, JFrame frame) throws SQLException {
+    public void init(JTabbedPane pane, MainFrame frame) throws SQLException {
         model = new ProducerModel();
         itemList = model.getItemList();
         this.frame = frame;

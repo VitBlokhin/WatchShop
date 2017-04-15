@@ -89,7 +89,7 @@ public class UserModel extends Model{
     // метод для логина
     public User getUserByNamePassword(String name, String password) throws SQLException{
         User user;
-        String sqlRequest = "select * from `users` where `name` = \'" + name + "\' and `password` = \'" + password + "\';";
+        String sqlRequest = "select * from `users` where `name` = \'" + name + "\' and `password` = \'" + password + "\' and `status` = \'1\';";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 

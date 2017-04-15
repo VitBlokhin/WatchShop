@@ -7,6 +7,7 @@ import com.itstep.pps2701.blokhin.models.ProducerModel;
 import com.itstep.pps2701.blokhin.models.WatchModel;
 import com.itstep.pps2701.blokhin.models.WatchTypeModel;
 import com.itstep.pps2701.blokhin.views.ErrorWindow;
+import com.itstep.pps2701.blokhin.views.MainFrame;
 import com.itstep.pps2701.blokhin.views.WatchesPanel;
 import com.oracle.jrockit.jfr.Producer;
 
@@ -36,7 +37,7 @@ public class WatchController extends Controller {
     public WatchController() {
     }
 
-    public void init(JTabbedPane pane, JFrame frame) throws SQLException {
+    public void init(JTabbedPane pane, MainFrame frame) throws SQLException {
         model = new WatchModel();
         pModel = new ProducerModel();
         wtModel = new WatchTypeModel();

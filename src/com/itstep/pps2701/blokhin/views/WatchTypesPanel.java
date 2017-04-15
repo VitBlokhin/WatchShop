@@ -1,11 +1,8 @@
 package com.itstep.pps2701.blokhin.views;
 
 import com.itstep.pps2701.blokhin.controllers.Controller;
-import com.itstep.pps2701.blokhin.controllers.WatchTypeController;
 import com.itstep.pps2701.blokhin.data.IData;
 import com.itstep.pps2701.blokhin.data.WatchType;
-import com.itstep.pps2701.blokhin.system.Utils;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

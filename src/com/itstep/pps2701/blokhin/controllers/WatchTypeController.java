@@ -1,6 +1,7 @@
 package com.itstep.pps2701.blokhin.controllers;
 
 import com.itstep.pps2701.blokhin.models.WatchTypeModel;
+import com.itstep.pps2701.blokhin.views.MainFrame;
 import com.itstep.pps2701.blokhin.views.WatchTypesPanel;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ public class WatchTypeController extends Controller {
     public WatchTypeController() {
     }
 
-    public void init(JTabbedPane pane, JFrame frame) throws SQLException {
+    public void init(JTabbedPane pane, MainFrame frame) throws SQLException {
         model = new WatchTypeModel();
         itemList = model.getItemList();
         this.frame = frame;
