@@ -35,8 +35,9 @@ public abstract class Controller {
         this.item = item;
     }
 
-    public void editItemDialog() {
+    public void editItemDialog(int id) {
         try {
+            item = model.getItemById(id);
             view.showEditDialog(item);
         } catch(Exception ex) {
             frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
@@ -62,24 +63,6 @@ public abstract class Controller {
             frame.showErrorDialog("Ошибка сохранения данных", ex.getMessage());
         }
     } // saveNewItem
-
-    public void setItemById(int id) {
-        try {
-            item = model.getItemById(id);
-        } catch(Exception ex) {
-            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
-        }
-    } // setItemById
-
-    public void updateItemsList() {
-        try {
-            itemList = model.getItemList();
-
-            view.updateItemsTable();
-        } catch(Exception ex) {
-            frame.showErrorDialog("Ошибка обновления данных", ex.getMessage());
-        }
-    } // updateItemsList
 
     public List<Object[]> getItemObjectsList(){
         try {

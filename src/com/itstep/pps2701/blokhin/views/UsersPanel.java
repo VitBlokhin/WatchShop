@@ -25,25 +25,9 @@ public class UsersPanel extends ContentPanel {
     }
 
     @Override
-    final protected JTable tableBuilder() {
-        String[] header = {"id", "Имя", "email", "Телефон","Работает", "Админ"};
-        DefaultTableModel dfm = new DefaultTableModel(header, 0){
-
-            @Override
-            public boolean isCellEditable(int x, int y) {
-                return false;
-            }
-        };
-
-        for(Object[] objects : controller.getItemObjectsList()) {
-            dfm.addRow(objects);
-        }
-
-        /*for(IData item : userList) {
-            dfm.addRow(item.toObjects());
-        }*/
-        return new JTable(dfm);
-    }
+    protected String[] tableHeaderBuilder() {
+        return new String[]{"id", "Имя", "email", "Телефон","Работает", "Админ"};
+    } // tableHeaderBuilder
 
     @Override
     final protected JDialog createEditDialog(String title, boolean modal, IData item){
@@ -94,7 +78,7 @@ public class UsersPanel extends ContentPanel {
                         chkAdmin.isSelected()));
                 controller.saveItem();
 
-                controller.updateItemsList();
+                updateItemsTable();
 
                 dialog.setVisible(false);
                 dialog.dispose();
@@ -176,7 +160,7 @@ public class UsersPanel extends ContentPanel {
                         chkAdmin.isSelected());
                 controller.saveNewItem(user);
 
-                controller.updateItemsList();
+                updateItemsTable();
 
                 dialog.setVisible(false);
                 dialog.dispose();

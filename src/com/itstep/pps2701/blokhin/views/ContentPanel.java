@@ -5,6 +5,7 @@ import com.itstep.pps2701.blokhin.data.IData;
 import jdk.nashorn.internal.scripts.JD;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -22,10 +23,6 @@ public abstract class ContentPanel implements IView{
     protected JButton editBtn;
     protected JButton addBtn;
 
-    protected void setController(Controller cont) {
-        controller = cont;
-    }
-
 
     public ContentPanel(JTabbedPane parent, String title, String tip, Controller cont) {
         this.controller = cont;
@@ -40,7 +37,7 @@ public abstract class ContentPanel implements IView{
         contentPanel = new JPanel(new BorderLayout(5,5));
         controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
 
-        itemsTable = tableBuilder();
+        tableBuilder();
 
         editBtn = new JButton("Редактировать");
         editBtn.addActionListener(new AbstractAction() {
@@ -49,8 +46,7 @@ public abstract class ContentPanel implements IView{
                 int row = itemsTable.getSelectedRow();
                 if(row >= 0) {
                     int id = (Integer) itemsTable.getValueAt(row, 0);
-                    controller.setItemById(id);
-                    controller.editItemDialog();
+                    controller.editItemDialog(id);
                 }
             }
         });
@@ -80,11 +76,13 @@ public abstract class ContentPanel implements IView{
         for(int i = 0; i < contentPanel.getComponentCount(); i++){
             if(contentPanel.getComponent(i).equals(itemsTable)) index = i;
         }
-        itemsTable = tableBuilder();
+        tableBuilder();
+
         contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER, index);
     } // updateItemsTable
 
     public void showEditDialog(IData item) {
+        // JDialog editDialog = createEditDialog("Редактировать", true, item);
         JDialog editDialog = createEditDialog("Редактировать", true, item);
         editDialog.setVisible(true);
     } // showEditDialog
@@ -94,7 +92,28 @@ public abstract class ContentPanel implements IView{
         addDialog.setVisible(true);
     } // showAddDialog
 
-    abstract protected JTable tableBuilder();
+    protected void tableBuilder() {
+        String[] header = tableHeaderBuilder();
+        DefaultTableModel dfm = new DefaultTableModel(header, 0){
+
+            @Override
+            public boolean isCellEditable(int x, int y) {
+                return false;
+            }
+        };
+
+        for(Object[] objects : controller.getItemObjectsList()) {
+            dfm.addRow(objects);
+        }
+
+        itemsTable = new JTable(dfm);
+        itemsTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        itemsTable.getTableHeader().setReorderingAllowed(false);
+
+    } // tableBuilder
+
+    protected abstract String[] tableHeaderBuilder();
+
     abstract protected JDialog createEditDialog(String name, boolean modal, IData item);
     abstract protected JDialog createAddDialog(String title, boolean modal);
 

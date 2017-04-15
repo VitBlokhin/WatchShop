@@ -21,21 +21,9 @@ public class ProducersPanel extends ContentPanel {
     }
 
     @Override
-    final protected JTable tableBuilder() {
-        String[] header = {"id", "Производитель", "Страна"};
-        DefaultTableModel dfm = new DefaultTableModel(header, 0){
-
-            @Override
-            public boolean isCellEditable(int x, int y) {
-                return false;
-            }
-        };
-
-        for(Object[] objects : controller.getItemObjectsList()) {
-            dfm.addRow(objects);
-        }
-        return new JTable(dfm);
-    }
+    protected String[] tableHeaderBuilder() {
+        return new String[]{"id", "Производитель", "Страна"};
+    } // tableHeaderBuilder
 
     @Override
     protected JDialog createEditDialog(String title, boolean modal, IData item) {
@@ -68,7 +56,7 @@ public class ProducersPanel extends ContentPanel {
                         txtName.getText(), txtCountry.getText()));
                 controller.saveItem();
 
-                controller.updateItemsList();
+                updateItemsTable();
 
                 dialog.setVisible(false);
                 dialog.dispose();
@@ -127,7 +115,7 @@ public class ProducersPanel extends ContentPanel {
                 WatchProducer watchProducer = new WatchProducer(txtName.getText(), txtCountry.getText());
                 controller.saveNewItem(watchProducer);
 
-                controller.updateItemsList();
+                updateItemsTable();
 
                 dialog.setVisible(false);
                 dialog.dispose();

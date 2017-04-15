@@ -20,21 +20,9 @@ public class WatchTypesPanel extends ContentPanel {
     }
 
     @Override
-    final protected JTable tableBuilder() {
-        String[] header = {"id", "Тип"};
-        DefaultTableModel dfm = new DefaultTableModel(header, 0){
-
-            @Override
-            public boolean isCellEditable(int x, int y) {
-                return false;
-            }
-        };
-
-        for(Object[] objects : controller.getItemObjectsList()) {
-            dfm.addRow(objects);
-        }
-        return new JTable(dfm);
-    }
+    protected String[] tableHeaderBuilder() {
+        return new String[]{"id", "Тип"};
+    } // tableHeaderBuilder
 
     @Override
     protected JDialog createEditDialog(String title, boolean modal, IData item) {
@@ -65,7 +53,7 @@ public class WatchTypesPanel extends ContentPanel {
                         txtName.getText()));
                 controller.saveItem();
 
-                controller.updateItemsList();
+                updateItemsTable();
 
                 dialog.setVisible(false);
                 dialog.dispose();
@@ -120,7 +108,7 @@ public class WatchTypesPanel extends ContentPanel {
                 WatchType watchType = new WatchType(txtName.getText());
                 controller.saveNewItem(watchType);
 
-                controller.updateItemsList();
+                updateItemsTable();
 
                 dialog.setVisible(false);
                 dialog.dispose();

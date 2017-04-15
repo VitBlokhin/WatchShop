@@ -25,21 +25,9 @@ public class WatchesPanel extends ContentPanel {
     }
 
     @Override
-    final protected JTable tableBuilder() {
-        String[] header = {"id", "Марка", "Цена", "Количество", "Видимость", "Производитель", "Тип"};
-        DefaultTableModel dfm = new DefaultTableModel(header, 0){
-
-            @Override
-            public boolean isCellEditable(int x, int y) {
-                return false;
-            }
-        };
-
-        for(Object[] objects : controller.getItemObjectsList()) {
-            dfm.addRow(objects);
-        }
-        return new JTable(dfm);
-    }
+    protected String[] tableHeaderBuilder() {
+        return new String[]{"id", "Марка", "Цена", "Количество", "Видимость", "Производитель", "Тип"};
+    } // tableHeaderBuilder
 
 
     @Override
@@ -93,7 +81,7 @@ public class WatchesPanel extends ContentPanel {
                 double price = (Double)spnPrice.getValue();
                 int quantity = (Integer)spnQuantity.getValue();
 
-                controller.setItem(new Watch(((Watch)item).getId(),
+                controller.setItem(new Watch(item.getId(),
                         txtMark.getText(),
                         price,
                         quantity,
@@ -102,7 +90,7 @@ public class WatchesPanel extends ContentPanel {
                         type.getId()));
                 controller.saveItem();
 
-                controller.updateItemsList();
+                updateItemsTable();
 
                 dialog.setVisible(false);
                 dialog.dispose();
@@ -196,7 +184,7 @@ public class WatchesPanel extends ContentPanel {
                             type.getId());
                     controller.saveNewItem(watch);
 
-                    controller.updateItemsList();
+                    updateItemsTable();
 
                     dialog.setVisible(false);
                     dialog.dispose();
