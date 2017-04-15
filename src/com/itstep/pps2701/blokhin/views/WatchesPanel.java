@@ -189,7 +189,9 @@ public class WatchesPanel extends ContentPanel {
                     dialog.setVisible(false);
                     dialog.dispose();
                 } catch (Exception ex) {
-                    ErrorWindow ew = new ErrorWindow("Ошибка формата", "Неверно указана цена");
+                    JOptionPane.showMessageDialog(null, "Ошибка ввода цены");
+                    dialog.setVisible(false);
+                    dialog.dispose();
                 }
             }
         });
@@ -223,5 +225,6 @@ public class WatchesPanel extends ContentPanel {
 
         return dialog;
     } // createAddDialog
+
 
 }

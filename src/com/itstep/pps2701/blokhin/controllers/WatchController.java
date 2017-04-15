@@ -7,10 +7,8 @@ import com.itstep.pps2701.blokhin.data.WatchType;
 import com.itstep.pps2701.blokhin.models.ProducerModel;
 import com.itstep.pps2701.blokhin.models.WatchModel;
 import com.itstep.pps2701.blokhin.models.WatchTypeModel;
-import com.itstep.pps2701.blokhin.views.ErrorWindow;
 import com.itstep.pps2701.blokhin.views.MainFrame;
 import com.itstep.pps2701.blokhin.views.WatchesPanel;
-import com.oracle.jrockit.jfr.Producer;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -25,6 +23,8 @@ public class WatchController extends Controller {
     private List<IData> producerList;
     private List<IData> watchTypeList;
 
+
+    protected WatchModel model;
     private ProducerModel pModel;
     private WatchTypeModel wtModel;
 
@@ -55,7 +55,7 @@ public class WatchController extends Controller {
         try {
             this.producerList = pModel.getItemList();
         } catch(Exception ex) {
-            ErrorWindow ew = new ErrorWindow("Ошибка загрузки данных", ex.getMessage());
+            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
         }
     }
 
@@ -63,13 +63,12 @@ public class WatchController extends Controller {
         try {
             this.watchTypeList = wtModel.getItemList();
         } catch(Exception ex) {
-            ErrorWindow ew = new ErrorWindow("Ошибка загрузки данных", ex.getMessage());
+            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
         }
     }
 
     @Override
     public List<Object[]> getItemObjectsList() {
-
         try {
             itemList = model.getItemList();
 
@@ -92,6 +91,32 @@ public class WatchController extends Controller {
             frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
             return null;
         }
-        // return super.getItemObjectsList();
-    }
-}
+    } // getItemObjectsList
+
+    // Запрос 1
+    public List<Object[]> watchQueryByType(String type) {
+
+        try {
+            itemList = model.query1(type);
+
+            // Object[]{0"id", 1"Марка", 2"Цена", 3"Количество", 4"Видимость", 5"Производитель", 6"Тип"}
+            // нужно заменить 5 и 6 элементы
+
+            List<Object[]> objectList = new ArrayList<>();
+            for(IData item : itemList) {
+                Object[] itemObjects;
+                WatchProducer watchProducer = pModel.getItemById(((Watch)item).getProducerId());
+                WatchType watchType = wtModel.getItemById(((Watch)item).getTypeId());
+                itemObjects = item.toObjects();
+                itemObjects[5] = watchProducer.toObjects()[1];
+                itemObjects[6] = watchType.toObjects()[1];
+                objectList.add(itemObjects);
+            }
+
+            return objectList;
+        } catch(Exception ex) {
+            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
+            return null;
+        }
+    } // watchQueryByType
+} // class WatchController

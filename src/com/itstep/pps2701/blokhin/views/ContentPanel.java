@@ -37,7 +37,7 @@ public abstract class ContentPanel implements IView{
         contentPanel = new JPanel(new BorderLayout(5,5));
         controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
 
-        tableBuilder();
+        itemsTable = tableBuilder();
 
         editBtn = new JButton("Редактировать");
         editBtn.addActionListener(new AbstractAction() {
@@ -59,10 +59,6 @@ public abstract class ContentPanel implements IView{
             }
         });
 
-        itemsTable.setFillsViewportHeight(true);
-        itemsTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        itemsTable.getTableHeader().setReorderingAllowed(false);
-
         controlPanel.add(editBtn);
         controlPanel.add(addBtn);
 
@@ -71,18 +67,18 @@ public abstract class ContentPanel implements IView{
     } // buildPanel
 
 
+    // Не работает, нужно полностью пересоздавать панель, либо перейти на другую и вернуться
     public void updateItemsTable(){
         int index = 0;
         for(int i = 0; i < contentPanel.getComponentCount(); i++){
             if(contentPanel.getComponent(i).equals(itemsTable)) index = i;
         }
-        tableBuilder();
+        itemsTable = tableBuilder();
 
         contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER, index);
     } // updateItemsTable
 
     public void showEditDialog(IData item) {
-        // JDialog editDialog = createEditDialog("Редактировать", true, item);
         JDialog editDialog = createEditDialog("Редактировать", true, item);
         editDialog.setVisible(true);
     } // showEditDialog
@@ -92,7 +88,7 @@ public abstract class ContentPanel implements IView{
         addDialog.setVisible(true);
     } // showAddDialog
 
-    protected void tableBuilder() {
+    protected JTable tableBuilder() {
         String[] header = tableHeaderBuilder();
         DefaultTableModel dfm = new DefaultTableModel(header, 0){
 
@@ -106,10 +102,12 @@ public abstract class ContentPanel implements IView{
             dfm.addRow(objects);
         }
 
-        itemsTable = new JTable(dfm);
-        itemsTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        itemsTable.getTableHeader().setReorderingAllowed(false);
+        JTable table = new JTable(dfm);
+        table.setFillsViewportHeight(true);
+        table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.getTableHeader().setReorderingAllowed(false);
 
+        return table;
     } // tableBuilder
 
     protected abstract String[] tableHeaderBuilder();

@@ -86,6 +86,63 @@ public class WatchModel extends Model {
         pstatement.close();
     } // addItem
 
+
+    // Вывести марки заданного типа часов
+    public List<IData> query1(String typeName) throws SQLException {
+        List<IData> watchList = new ArrayList<>();
+
+        String sqlRequest = "SELECT w.* FROM watches as w " +
+                "join watch_types as wt on w.type_id = wt.id" +
+                "where wt.type_name = " + typeName + ";";
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
+        ResultSet result = pstatement.executeQuery();
+
+        while(result.next()) {
+            watchList.add(parseItem(result));
+        } // while
+        pstatement.close();
+
+        return watchList;
+    } // query1
+
+    // Вывести информацию о механических часах, цена на которые не превышает заданную
+    // ---- здесь небольшое изменение - добавлен выбор типа часов
+    public List<IData> query2(double price, String typeName) throws SQLException {
+        List<IData> watchList = new ArrayList<>();
+
+        String sqlRequest = "SELECT w.* FROM watches as w " +
+                "join watch_types as wt on w.type_id = wt.id" +
+                "where w.price <= " + price + " and wt.type_name = " + typeName + ";";
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
+        ResultSet result = pstatement.executeQuery();
+
+        while(result.next()) {
+            watchList.add(parseItem(result));
+        } // while
+        pstatement.close();
+
+        return watchList;
+    } // query2
+
+    // Вывести марки часов, изготовленных в заданной стране
+    public List<IData> query3(String country) throws SQLException {
+        List<IData> watchList = new ArrayList<>();
+
+        String sqlRequest = "SELECT w.* FROM watches as w " +
+                "join producers as p on w.producer_id = p.id" +
+                "where p.country = " + country + ";";
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
+        ResultSet result = pstatement.executeQuery();
+
+        while(result.next()) {
+            watchList.add(parseItem(result));
+        } // while
+        pstatement.close();
+
+        return watchList;
+    } // query3
+
+
     @Override
     final protected Watch parseItem(ResultSet result) throws SQLException {
         return new Watch(result.getInt("id"),

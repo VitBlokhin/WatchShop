@@ -1,7 +1,6 @@
 package com.itstep.pps2701.blokhin.system;
 
-import com.itstep.pps2701.blokhin.views.ErrorWindow;
-
+import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -40,7 +39,7 @@ public class Utils {
             formatter = new MaskFormatter(s);
             formatter.setPlaceholderCharacter('0');
         } catch (java.text.ParseException ex) {
-            ErrorWindow ew = new ErrorWindow("Ошибка форматирования", ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Ошибка форматирования");
         }
         return formatter;
     }

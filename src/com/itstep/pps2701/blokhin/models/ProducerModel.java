@@ -80,4 +80,25 @@ public class ProducerModel  extends Model {
                 result.getString("name"),
                 result.getString("country"));
     } // parseItem
+
+    // Вывести производителей, общая сумма часов которых в магазине не превышает заданную
+    public List<IData> query4(int quantity) throws SQLException {
+        List<IData> watchList = new ArrayList<>();
+
+        String sqlRequest = "select p.*" +
+                                "from watches as w" +
+                                "join producers as p on w.producer_id = p.id" +
+                                "group by p.id" +
+                                "HAVING sum(quantity) >" + quantity + ";";
+        PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
+        ResultSet result = pstatement.executeQuery();
+
+        while(result.next()) {
+            watchList.add(parseItem(result));
+        } // while
+        pstatement.close();
+
+        return watchList;
+    } // query4
+
 } // class ProducerModel
