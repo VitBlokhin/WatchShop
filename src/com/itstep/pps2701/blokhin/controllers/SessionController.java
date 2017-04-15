@@ -7,6 +7,8 @@ import com.itstep.pps2701.blokhin.views.ContentPanel;
 import com.itstep.pps2701.blokhin.views.MainFrame;
 
 import javax.swing.*;
+import java.nio.file.AccessDeniedException;
+import java.rmi.AccessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -51,13 +53,19 @@ public class SessionController extends Controller{
 
     public void login(String userName, String password){
         try {
+            if(userName.isEmpty() || password.isEmpty()) throw new AccessException("Неверный логин или пароль");
             Utils.connect("root","");
             model = new UserModel();
             currentUser = model.getUserByNamePassword(userName, password);
-            if(currentUser == null) throw new Exception();
-            else init();
-        } catch(Exception e) {
-            frame.showErrorDialog("Ошибка авторизации", "Неверный логин или пароль");
+            if(currentUser == null) throw new AccessException("Неверный логин или пароль");
+            else {
+                init();
+                frame.setLoginMenuItemsActive(false);
+            }
+        } catch(AccessException ex) {
+            frame.showErrorDialog("Ошибка авторизации", ex.getMessage());
+        } catch(SQLException ex) {
+            frame.showErrorDialog("Ошибка подключения к БД", ex.getMessage());
         }
     } // login
 

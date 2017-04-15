@@ -78,8 +78,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 sessionController.logoff();
-                mnuLogin.setEnabled(true);
-                this.setEnabled(false);
+                setLoginMenuItemsActive(true);
             }
         });
 
@@ -126,10 +125,6 @@ public class MainFrame extends JFrame {
                         txtName.getText(),
                         String.valueOf(ptxtPassword.getPassword()
                         ));
-
-
-                mnuLogoff.setEnabled(true);
-                mnuLogin.setEnabled(false);
 
                 dialog.setVisible(false);
                 dialog.dispose();
@@ -196,6 +191,11 @@ public class MainFrame extends JFrame {
 
         dialog.setVisible(true);
     } // showErrorDialog
+
+    public void setLoginMenuItemsActive(boolean flag){
+        mnuLogin.setEnabled(flag);
+        mnuLogoff.setEnabled(!flag);
+    } // setLoginMenuItemsActive
 
 
 } // class MainFrame
