@@ -55,7 +55,7 @@ public abstract class ContentPanel implements IView{
         addBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.addItemDialog();
+                showAddDialog();
             }
         });
 
@@ -65,28 +65,6 @@ public abstract class ContentPanel implements IView{
         contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER);
         contentPanel.add(controlPanel, BorderLayout.SOUTH);
     } // buildPanel
-
-
-    // Не работает, нужно полностью пересоздавать панель, либо перейти на другую и вернуться
-    public void updateItemsTable(){
-        int index = 0;
-        for(int i = 0; i < contentPanel.getComponentCount(); i++){
-            if(contentPanel.getComponent(i).equals(itemsTable)) index = i;
-        }
-        itemsTable = tableBuilder();
-
-        contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER, index);
-    } // updateItemsTable
-
-    public void showEditDialog(IData item) {
-        JDialog editDialog = createEditDialog("Редактировать", true, item);
-        editDialog.setVisible(true);
-    } // showEditDialog
-
-    public void showAddDialog() {
-        JDialog addDialog = createAddDialog("Добавить", true);
-        addDialog.setVisible(true);
-    } // showAddDialog
 
     protected JTable tableBuilder() {
         String[] header = tableHeaderBuilder();
@@ -109,6 +87,28 @@ public abstract class ContentPanel implements IView{
 
         return table;
     } // tableBuilder
+
+    public void updateItemsTable(){
+        int index = 0;
+        for(int i = 0; i < contentPanel.getComponentCount(); i++){
+            if(contentPanel.getComponent(i).equals(itemsTable)) index = i;
+        }
+        itemsTable = tableBuilder();
+
+        contentPanel.revalidate();
+        contentPanel.repaint();
+        contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER, index);
+    } // updateItemsTable
+
+    public void showEditDialog(IData item) {
+        JDialog editDialog = createEditDialog("Редактировать", true, item);
+        editDialog.setVisible(true);
+    } // showEditDialog
+
+    public void showAddDialog() {
+        JDialog addDialog = createAddDialog("Добавить", true);
+        addDialog.setVisible(true);
+    } // showAddDialog
 
     protected abstract String[] tableHeaderBuilder();
 

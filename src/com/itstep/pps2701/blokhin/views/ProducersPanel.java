@@ -16,9 +16,93 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  * Created by Vit on 14.04.2017.
  */
 public class ProducersPanel extends ContentPanel {
+    ButtonGroup queriesGroup;
+    JRadioButton rbNoQuery;
+    JRadioButton rbQuery;
+    JButton btnRunQuery;
+
     public ProducersPanel(JTabbedPane pane, String title, String tip, Controller cont) {
         super(pane, title, tip,  cont);
     }
+
+    @Override
+    protected void buildPanel() {
+        contentPanel = new JPanel(new BorderLayout(5,5));
+        controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
+
+        JPanel queryPanel = new JPanel();
+
+        queriesGroup = new ButtonGroup();
+        rbNoQuery = new JRadioButton("Вывести всё");
+        rbQuery = new JRadioButton("Запрос 4");
+
+        btnRunQuery = new JButton("Сделать запрос");
+        btnRunQuery.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: опрос радиокнопок, по результату - вызов нужного диалогового окна
+            }
+        });
+
+        itemsTable = tableBuilder();
+
+        editBtn = new JButton("Редактировать");
+        editBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = itemsTable.getSelectedRow();
+                if(row >= 0) {
+                    int id = (Integer) itemsTable.getValueAt(row, 0);
+                    controller.editItemDialog(id);
+                }
+            }
+        });
+
+        addBtn = new JButton("Добавить");
+        addBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.addItemDialog();
+            }
+        });
+
+        controlPanel.add(editBtn);
+        controlPanel.add(addBtn);
+
+        queriesGroup.add(rbNoQuery);
+        queriesGroup.add(rbQuery);
+
+        queryPanel.add(rbNoQuery);
+        queryPanel.add(rbQuery);
+        queryPanel.add(btnRunQuery);
+
+        contentPanel.add(queryPanel, BorderLayout.NORTH);
+        contentPanel.add(new JScrollPane(itemsTable), BorderLayout.CENTER);
+        contentPanel.add(controlPanel, BorderLayout.SOUTH);
+    } // buildPanel
+
+    @Override
+    protected JTable tableBuilder() {
+        String[] header = tableHeaderBuilder();
+        DefaultTableModel dfm = new DefaultTableModel(header, 0){
+
+            @Override
+            public boolean isCellEditable(int x, int y) {
+                return false;
+            }
+        };
+
+        for(Object[] objects : controller.getItemObjectsList()) {
+            dfm.addRow(objects);
+        }
+
+        JTable table = new JTable(dfm);
+        table.setFillsViewportHeight(true);
+        table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.getTableHeader().setReorderingAllowed(false);
+
+        return table;
+    } // tableBuilder
 
     @Override
     protected String[] tableHeaderBuilder() {

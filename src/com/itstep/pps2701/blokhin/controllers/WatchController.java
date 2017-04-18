@@ -73,7 +73,7 @@ public class WatchController extends Controller {
             itemList = model.getItemList();
 
             // Object[]{0"id", 1"Марка", 2"Цена", 3"Количество", 4"Видимость", 5"Производитель", 6"Тип"}
-            // нужно заменить 5 и 6 элементы
+            // замена 5 и 6 элементов на элементы из моделей Производитель и Тип соответственно
 
             List<Object[]> objectList = new ArrayList<>();
             for(IData item : itemList) {
@@ -94,13 +94,13 @@ public class WatchController extends Controller {
     } // getItemObjectsList
 
     // Запрос 1
-    public List<Object[]> watchQueryByType(String type) {
+    public List<Object[]> watchQuery1(WatchType type) {
 
         try {
             itemList = model.query1(type);
 
             // Object[]{0"id", 1"Марка", 2"Цена", 3"Количество", 4"Видимость", 5"Производитель", 6"Тип"}
-            // нужно заменить 5 и 6 элементы
+            // замена 5 и 6 элементов на элементы из моделей Производитель и Тип соответственно
 
             List<Object[]> objectList = new ArrayList<>();
             for(IData item : itemList) {
@@ -118,5 +118,59 @@ public class WatchController extends Controller {
             frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
             return null;
         }
-    } // watchQueryByType
+    } // watchQuery1
+
+    // Запрос 2
+    public List<Object[]> watchQuery2(double price, WatchType type) {
+
+        try {
+            itemList = model.query2(price, type);
+
+            // Object[]{0"id", 1"Марка", 2"Цена", 3"Количество", 4"Видимость", 5"Производитель", 6"Тип"}
+            // замена 5 и 6 элементов на элементы из моделей Производитель и Тип соответственно
+
+            List<Object[]> objectList = new ArrayList<>();
+            for(IData item : itemList) {
+                Object[] itemObjects;
+                WatchProducer watchProducer = pModel.getItemById(((Watch)item).getProducerId());
+                WatchType watchType = wtModel.getItemById(((Watch)item).getTypeId());
+                itemObjects = item.toObjects();
+                itemObjects[5] = watchProducer.toObjects()[1];
+                itemObjects[6] = watchType.toObjects()[1];
+                objectList.add(itemObjects);
+            }
+
+            return objectList;
+        } catch(Exception ex) {
+            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
+            return null;
+        }
+    } // watchQuery2
+
+    // Запрос 3
+    public List<Object[]> watchQuery3(String country) {
+
+        try {
+            itemList = model.query3(country);
+
+            // Object[]{0"id", 1"Марка", 2"Цена", 3"Количество", 4"Видимость", 5"Производитель", 6"Тип"}
+            // замена 5 и 6 элементов на элементы из моделей Производитель и Тип соответственно
+
+            List<Object[]> objectList = new ArrayList<>();
+            for(IData item : itemList) {
+                Object[] itemObjects;
+                WatchProducer watchProducer = pModel.getItemById(((Watch)item).getProducerId());
+                WatchType watchType = wtModel.getItemById(((Watch)item).getTypeId());
+                itemObjects = item.toObjects();
+                itemObjects[5] = watchProducer.toObjects()[1];
+                itemObjects[6] = watchType.toObjects()[1];
+                objectList.add(itemObjects);
+            }
+
+            return objectList;
+        } catch(Exception ex) {
+            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
+            return null;
+        }
+    } // watchQuery3
 } // class WatchController

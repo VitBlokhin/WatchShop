@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
  */
 public class MainFrame extends JFrame {
     private JMenu menuFile;
-    private JMenu menuQueries; // TODO
     private JMenuItem mnuLogin;
     private JMenuItem mnuLogoff;
 

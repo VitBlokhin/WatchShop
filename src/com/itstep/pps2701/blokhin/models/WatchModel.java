@@ -2,6 +2,8 @@ package com.itstep.pps2701.blokhin.models;
 
 import com.itstep.pps2701.blokhin.data.IData;
 import com.itstep.pps2701.blokhin.data.Watch;
+import com.itstep.pps2701.blokhin.data.WatchProducer;
+import com.itstep.pps2701.blokhin.data.WatchType;
 import com.itstep.pps2701.blokhin.system.Utils;
 
 import java.sql.Connection;
@@ -88,12 +90,12 @@ public class WatchModel extends Model {
 
 
     // Вывести марки заданного типа часов
-    public List<IData> query1(String typeName) throws SQLException {
+    public List<IData> query1(WatchType type) throws SQLException {
         List<IData> watchList = new ArrayList<>();
 
         String sqlRequest = "SELECT w.* FROM watches as w " +
                 "join watch_types as wt on w.type_id = wt.id" +
-                "where wt.type_name = " + typeName + ";";
+                "where wt.type_name = '" + type.getTypename() + "'";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 
@@ -107,12 +109,12 @@ public class WatchModel extends Model {
 
     // Вывести информацию о механических часах, цена на которые не превышает заданную
     // ---- здесь небольшое изменение - добавлен выбор типа часов
-    public List<IData> query2(double price, String typeName) throws SQLException {
+    public List<IData> query2(double price, WatchType type) throws SQLException {
         List<IData> watchList = new ArrayList<>();
 
         String sqlRequest = "SELECT w.* FROM watches as w " +
                 "join watch_types as wt on w.type_id = wt.id" +
-                "where w.price <= " + price + " and wt.type_name = " + typeName + ";";
+                "where w.price <= " + price + " and wt.type_name = \'" + type.getTypename() + "\';";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 
@@ -130,7 +132,7 @@ public class WatchModel extends Model {
 
         String sqlRequest = "SELECT w.* FROM watches as w " +
                 "join producers as p on w.producer_id = p.id" +
-                "where p.country = " + country + ";";
+                "where p.country = \'" + country + "\'";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 
