@@ -49,9 +49,8 @@ public class WatchTypesPanel extends ContentPanel {
         acceptBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setItem(new WatchType(item.getId(),
+                controller.saveItem(new WatchType(item.getId(),
                         txtName.getText()));
-                controller.saveItem();
 
                 controller.updateItemsList();
                 updateItemsTable();

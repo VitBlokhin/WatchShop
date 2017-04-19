@@ -23,10 +23,8 @@ public class WatchController extends Controller {
     private List<IData> producerList;
     private List<IData> watchTypeList;
 
-
-    //protected WatchModel model;
-    private ProducerModel pModel;
-    private WatchTypeModel wtModel;
+    private ProducerModel pModel;   // для отображения производителей и типов часов в диалоговых окнах вместо их id
+    private WatchTypeModel wtModel; //
 
     public List<IData> getProducerList() {
         return producerList;
@@ -43,8 +41,9 @@ public class WatchController extends Controller {
         pModel = new ProducerModel();
         wtModel = new WatchTypeModel();
 
-        setProducerList();
-        setWatchTypeList();
+        //setProducerList();
+        //setWatchTypeList();
+        updateProducerAndTypeLists();
 
         itemList = model.getItemList();
         this.frame = frame;
@@ -57,7 +56,7 @@ public class WatchController extends Controller {
         } catch(Exception ex) {
             frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
         }
-    }
+    } // setProducerList
 
     private void setWatchTypeList() {
         try {
@@ -65,17 +64,23 @@ public class WatchController extends Controller {
         } catch(Exception ex) {
             frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
         }
-    }
+    } // setWatchTypeList
 
-
+    public void updateProducerAndTypeLists(){
+        try {
+            this.producerList = pModel.getItemList();
+            this.watchTypeList = wtModel.getItemList();
+        } catch(Exception ex) {
+            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
+        }
+    } // updateProducerAndTypeLists
 
     @Override
     public List<Object[]> getItemObjectsList() {
         try {
-            // itemList = model.getItemList();
-
+            // для отображения производителей и типов часов в диалоговых окнах вместо их id
             // Object[]{0"id", 1"Марка", 2"Цена", 3"Количество", 4"Видимость", 5"Производитель", 6"Тип"}
-            // замена 5 и 6 элементов на элементы из моделей Производитель и Тип соответственно
+            // заменяем 5 и 6 элементов на элементы из моделей Производитель и Тип соответственно
 
             List<Object[]> objectList = new ArrayList<>();
             for(IData item : itemList) {

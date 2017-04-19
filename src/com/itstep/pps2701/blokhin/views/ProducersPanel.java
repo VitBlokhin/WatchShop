@@ -119,9 +119,8 @@ public class ProducersPanel extends ContentPanel {
         acceptBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setItem(new WatchProducer(item.getId(),
+                controller.saveItem(new WatchProducer(item.getId(),
                         txtName.getText(), txtCountry.getText()));
-                controller.saveItem();
 
                 controller.updateItemsList();
                 updateItemsTable();
@@ -240,7 +239,6 @@ public class ProducersPanel extends ContentPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int quantity = (Integer)spnQuantity.getValue();
-                //objectList =
                 ((ProducerController)controller).producerQuery4(quantity);
 
                 updateItemsTable();
@@ -263,6 +261,7 @@ public class ProducersPanel extends ContentPanel {
         controlPanel.add(cancelBtn);
 
         contentPanel.add(lblText);
+        contentPanel.add(Box.createVerticalStrut(15));
         contentPanel.add(spnQuantity);
 
         dialog.add(contentPanel, BorderLayout.CENTER);

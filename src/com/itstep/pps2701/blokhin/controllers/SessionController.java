@@ -3,14 +3,10 @@ package com.itstep.pps2701.blokhin.controllers;
 import com.itstep.pps2701.blokhin.data.User;
 import com.itstep.pps2701.blokhin.models.UserModel;
 import com.itstep.pps2701.blokhin.system.Utils;
-import com.itstep.pps2701.blokhin.views.ContentPanel;
 import com.itstep.pps2701.blokhin.views.MainFrame;
 
 import javax.swing.*;
-import java.nio.file.AccessDeniedException;
 import java.rmi.AccessException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
@@ -18,7 +14,7 @@ import java.sql.SQLException;
  */
 public class SessionController extends Controller{
     private UserModel model;
-    private User currentUser = null;
+    private User currentUser = null;   // текущий юзер, работающий в программе
 
     public SessionController() {
     }
@@ -51,6 +47,7 @@ public class SessionController extends Controller{
         return currentUser;
     } // getCurrentUser
 
+    // Логин юзера
     public void login(String userName, String password){
         try {
             if(userName.isEmpty() || password.isEmpty()) throw new AccessException("Неверный логин или пароль");
@@ -60,7 +57,7 @@ public class SessionController extends Controller{
             if(currentUser == null) throw new AccessException("Неверный логин или пароль");
             else {
                 init();
-                frame.setLoginMenuItemsActive(false);
+                frame.setLoginMenuItemsStatus(false);
             }
         } catch(AccessException ex) {
             frame.showErrorDialog("Ошибка авторизации", ex.getMessage());
@@ -69,6 +66,7 @@ public class SessionController extends Controller{
         }
     } // login
 
+    // Выход юзера из программы
     public void logoff() {
         try {
             currentUser = null;

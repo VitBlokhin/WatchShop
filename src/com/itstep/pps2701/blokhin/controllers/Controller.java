@@ -49,7 +49,7 @@ public abstract class Controller {
         view.showAddDialog();
     } // addItemDialog
 
-    public void saveItem() {
+    public void saveItem(IData item) {
         try {
             model.updateItem(item);
         } catch(Exception ex) {
@@ -87,6 +87,6 @@ public abstract class Controller {
         } catch(Exception ex) {
             frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
         }
-    }
-}
+    } // updateItemsList
+} // Controller
 

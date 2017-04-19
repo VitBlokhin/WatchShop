@@ -28,8 +28,6 @@ public class WatchesPanel extends ContentPanel {
     JRadioButton rbQuery3;
     JButton btnRunQuery;
 
-    //List<Object[]> objectList;
-
     public WatchesPanel(JTabbedPane tabbedPane, String title, String tip, Controller cont) {
         super(tabbedPane, title, tip,  cont);
     }
@@ -46,8 +44,6 @@ public class WatchesPanel extends ContentPanel {
         rbQuery1 = new JRadioButton("Запрос 1");
         rbQuery2 = new JRadioButton("Запрос 2");
         rbQuery3 = new JRadioButton("Запрос 3");
-
-        //objectList = controller.getItemObjectsList();
 
         btnRunQuery = new JButton("Сделать запрос");
         btnRunQuery.addActionListener(new AbstractAction() {
@@ -152,7 +148,14 @@ public class WatchesPanel extends ContentPanel {
         List<IData> watchTypeList = ((WatchController)controller).getWatchTypeList();
 
         cboxProducer = new JComboBox(producerList.toArray());
+        for(IData producer : producerList) {
+            if(((Watch) item).getProducerId() == producer.getId()) cboxProducer.setSelectedItem(producer);
+        }
         cboxType = new JComboBox(watchTypeList.toArray());
+        for(IData watchType : watchTypeList) {
+            if(((Watch) item).getTypeId() == watchType.getId()) cboxType.setSelectedItem(watchType);
+        }
+
 
         acceptBtn = new JButton("Сохранить");
         acceptBtn.addActionListener(new AbstractAction() {
@@ -164,14 +167,13 @@ public class WatchesPanel extends ContentPanel {
                 double price = (Double)spnPrice.getValue();
                 int quantity = (Integer)spnQuantity.getValue();
 
-                controller.setItem(new Watch(item.getId(),
+                controller.saveItem(new Watch(item.getId(),
                         txtMark.getText(),
                         price,
                         quantity,
                         chkVisible.isSelected(),
                         producer.getId(),
                         type.getId()));
-                controller.saveItem();
 
                 controller.updateItemsList();
                 updateItemsTable();
@@ -346,8 +348,7 @@ public class WatchesPanel extends ContentPanel {
             public void actionPerformed(ActionEvent e) {
                 WatchType type = (WatchType)cboxType.getSelectedItem();
 
-                //objectList =
-                        ((WatchController)controller).watchQuery1(type);
+                ((WatchController)controller).watchQuery1(type);
 
                 updateItemsTable();
 
@@ -369,6 +370,7 @@ public class WatchesPanel extends ContentPanel {
         controlPanel.add(cancelBtn);
 
         contentPanel.add(lblText);
+        contentPanel.add(Box.createVerticalStrut(10));
         contentPanel.add(cboxType);
 
         dialog.add(contentPanel, BorderLayout.CENTER);
@@ -413,8 +415,7 @@ public class WatchesPanel extends ContentPanel {
                     WatchType type = (WatchType) cboxType.getSelectedItem();
                     double price = Double.parseDouble(txtPrice.getText());
 
-                    //objectList =
-                            ((WatchController) controller).watchQuery2(price, type);
+                    ((WatchController) controller).watchQuery2(price, type);
 
                     updateItemsTable();
 
@@ -441,6 +442,7 @@ public class WatchesPanel extends ContentPanel {
         controlPanel.add(cancelBtn);
 
         contentPanel.add(lblText);
+        contentPanel.add(Box.createVerticalStrut(5));
         contentPanel.add(lblPrice);
         contentPanel.add(txtPrice);
         contentPanel.add(lblType);
@@ -451,6 +453,7 @@ public class WatchesPanel extends ContentPanel {
 
         dialog.setVisible(true);
     } // runDialogQuery2
+
 
     private void runDialogQuery3() {
         JButton acceptBtn, cancelBtn;
@@ -479,8 +482,7 @@ public class WatchesPanel extends ContentPanel {
             public void actionPerformed(ActionEvent e) {
                 String country = txtCountry.getText();
 
-                //objectList =
-                        ((WatchController) controller).watchQuery3(country);
+                ((WatchController) controller).watchQuery3(country);
 
                 updateItemsTable();
 
@@ -502,6 +504,7 @@ public class WatchesPanel extends ContentPanel {
         controlPanel.add(cancelBtn);
 
         contentPanel.add(lblText);
+        contentPanel.add(Box.createVerticalStrut(10));
         contentPanel.add(txtCountry);
 
         dialog.add(contentPanel, BorderLayout.CENTER);
@@ -509,8 +512,4 @@ public class WatchesPanel extends ContentPanel {
 
         dialog.setVisible(true);
     } // runDialogQuery3
-
-
-
-
 }

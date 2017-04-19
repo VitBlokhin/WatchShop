@@ -69,14 +69,14 @@ public class UsersPanel extends ContentPanel {
         acceptBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setItem(new User(item.getId(),
+
+                controller.saveItem(new User(item.getId(),
                         txtName.getText(),
                         txtEmail.getText(),
                         ftxtPhone.getText(),
                         txtPassword.getText(),
                         chkStatus.isSelected(),
                         chkAdmin.isSelected()));
-                controller.saveItem();
 
                 controller.updateItemsList();
                 updateItemsTable();

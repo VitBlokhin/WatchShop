@@ -28,7 +28,7 @@ public class MainFrame extends JFrame {
         buildGUI();
     } // MainWindow
 
-    public void buildGUI() {
+    private void buildGUI() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setSize(600,500);
@@ -43,16 +43,6 @@ public class MainFrame extends JFrame {
 
         setVisible(true);
     } // buildGUI
-
-    public void rebuildGUI(){
-        setJMenuBar(createMenuBar());
-
-        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-
-        getContentPane().add(tabbedPane);
-
-        setVisible(true);
-    }
 
     public JTabbedPane getTabbedPane() {
         return tabbedPane;
@@ -77,7 +67,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 sessionController.logoff();
-                setLoginMenuItemsActive(true);
+                setLoginMenuItemsStatus(true);
             }
         });
 
@@ -191,10 +181,11 @@ public class MainFrame extends JFrame {
         dialog.setVisible(true);
     } // showErrorDialog
 
-    public void setLoginMenuItemsActive(boolean flag){
+    // Активация/деактивация элементов меню при логине пользователя
+    public void setLoginMenuItemsStatus(boolean flag){
         mnuLogin.setEnabled(flag);
         mnuLogoff.setEnabled(!flag);
-    } // setLoginMenuItemsActive
+    } // setLoginMenuItemsStatus
 
 
 } // class MainFrame
