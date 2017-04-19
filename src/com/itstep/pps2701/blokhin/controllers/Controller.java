@@ -6,6 +6,7 @@ import com.itstep.pps2701.blokhin.views.IView;
 import com.itstep.pps2701.blokhin.views.MainFrame;
 
 import javax.swing.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public abstract class Controller {
 
     public List<Object[]> getItemObjectsList(){
         try {
-            itemList = model.getItemList();
+            // itemList = model.getItemList();
 
             List<Object[]> objectList = new ArrayList<>();
             for(IData item : itemList) {
@@ -79,5 +80,13 @@ public abstract class Controller {
             return null;
         }
     } // getItemObjectsList
+
+    public void updateItemsList() {
+        try {
+            itemList = model.getItemList();
+        } catch(Exception ex) {
+            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
+        }
+    }
 }
 

@@ -89,7 +89,7 @@ public class ProducerModel  extends Model {
                                 "from watches as w " +
                                 "join producers as p on w.producer_id = p.id " +
                                 "group by p.id " +
-                                "HAVING sum(quantity) > " + quantity + ";";
+                                "HAVING sum(quantity) <= " + quantity + ";";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 

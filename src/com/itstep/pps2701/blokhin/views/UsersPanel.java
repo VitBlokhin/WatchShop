@@ -78,6 +78,7 @@ public class UsersPanel extends ContentPanel {
                         chkAdmin.isSelected()));
                 controller.saveItem();
 
+                controller.updateItemsList();
                 updateItemsTable();
 
                 dialog.setVisible(false);
@@ -160,6 +161,7 @@ public class UsersPanel extends ContentPanel {
                         chkAdmin.isSelected());
                 controller.saveNewItem(user);
 
+                controller.updateItemsList();
                 updateItemsTable();
 
                 dialog.setVisible(false);

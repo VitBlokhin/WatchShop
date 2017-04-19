@@ -1,6 +1,7 @@
 package com.itstep.pps2701.blokhin.views;
 
 import com.itstep.pps2701.blokhin.controllers.Controller;
+import com.itstep.pps2701.blokhin.controllers.ProducerController;
 import com.itstep.pps2701.blokhin.data.IData;
 import com.itstep.pps2701.blokhin.data.WatchProducer;
 
@@ -40,7 +41,12 @@ public class ProducersPanel extends ContentPanel {
         btnRunQuery.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO: опрос радиокнопок, по результату - вызов нужного диалогового окна
+                // опрос радиокнопок, по результату - вызов нужного диалогового окна
+                if(rbQuery.isSelected()) runDialogQuery4();
+                if(rbNoQuery.isSelected()) {
+                    controller.updateItemsList();
+                    updateItemsTable();
+                }
             }
         });
 
@@ -82,29 +88,6 @@ public class ProducersPanel extends ContentPanel {
     } // buildPanel
 
     @Override
-    protected JTable tableBuilder() {
-        String[] header = tableHeaderBuilder();
-        DefaultTableModel dfm = new DefaultTableModel(header, 0){
-
-            @Override
-            public boolean isCellEditable(int x, int y) {
-                return false;
-            }
-        };
-
-        for(Object[] objects : controller.getItemObjectsList()) {
-            dfm.addRow(objects);
-        }
-
-        JTable table = new JTable(dfm);
-        table.setFillsViewportHeight(true);
-        table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.getTableHeader().setReorderingAllowed(false);
-
-        return table;
-    } // tableBuilder
-
-    @Override
     protected String[] tableHeaderBuilder() {
         return new String[]{"id", "Производитель", "Страна"};
     } // tableHeaderBuilder
@@ -140,6 +123,7 @@ public class ProducersPanel extends ContentPanel {
                         txtName.getText(), txtCountry.getText()));
                 controller.saveItem();
 
+                controller.updateItemsList();
                 updateItemsTable();
 
                 dialog.setVisible(false);
@@ -167,7 +151,7 @@ public class ProducersPanel extends ContentPanel {
         dialog.add(controlPanel, BorderLayout.SOUTH);
 
         return dialog;
-    }
+    } // createEditDialog
 
     @Override
     protected JDialog createAddDialog(String title, boolean modal) {
@@ -199,6 +183,7 @@ public class ProducersPanel extends ContentPanel {
                 WatchProducer watchProducer = new WatchProducer(txtName.getText(), txtCountry.getText());
                 controller.saveNewItem(watchProducer);
 
+                controller.updateItemsList();
                 updateItemsTable();
 
                 dialog.setVisible(false);
@@ -226,5 +211,63 @@ public class ProducersPanel extends ContentPanel {
         dialog.add(controlPanel, BorderLayout.SOUTH);
 
         return dialog;
-    }
+    } // createAddDialog
+
+
+    private void runDialogQuery4() {
+        JButton acceptBtn, cancelBtn;
+
+        JLabel lblText;
+        JSpinner spnQuantity;
+
+        JDialog dialog = new JDialog(controller.getMainframe(), "Запрос 1", true);
+        dialog.setLayout(new BorderLayout(5,5));
+        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        dialog.setSize(300, 160);
+        dialog.setLocationRelativeTo(dialog.getOwner());
+        dialog.setResizable(false);
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
+
+        lblText = new JLabel("<html>Вывести производителей, общая сумма часов которых в магазине не превышает заданную");
+
+        spnQuantity = new JSpinner(new SpinnerNumberModel(0,0,9999,1));
+
+        acceptBtn = new JButton("Сохранить");
+        acceptBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int quantity = (Integer)spnQuantity.getValue();
+                //objectList =
+                ((ProducerController)controller).producerQuery4(quantity);
+
+                updateItemsTable();
+
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
+        });
+
+        cancelBtn = new JButton("Отмена");
+        cancelBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
+        });
+
+        controlPanel.add(acceptBtn);
+        controlPanel.add(cancelBtn);
+
+        contentPanel.add(lblText);
+        contentPanel.add(spnQuantity);
+
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.add(controlPanel, BorderLayout.SOUTH);
+
+        dialog.setVisible(true);
+    } // runDialogQuery4
 }

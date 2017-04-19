@@ -28,7 +28,7 @@ public class WatchesPanel extends ContentPanel {
     JRadioButton rbQuery3;
     JButton btnRunQuery;
 
-    List<Object[]> objectList;
+    //List<Object[]> objectList;
 
     public WatchesPanel(JTabbedPane tabbedPane, String title, String tip, Controller cont) {
         super(tabbedPane, title, tip,  cont);
@@ -39,8 +39,6 @@ public class WatchesPanel extends ContentPanel {
         contentPanel = new JPanel(new BorderLayout(5,5));
         controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
 
-        //itemsTable = tableBuilder();
-
         JPanel queryPanel = new JPanel();
 
         queriesGroup = new ButtonGroup();
@@ -49,7 +47,7 @@ public class WatchesPanel extends ContentPanel {
         rbQuery2 = new JRadioButton("Запрос 2");
         rbQuery3 = new JRadioButton("Запрос 3");
 
-        objectList = controller.getItemObjectsList();
+        //objectList = controller.getItemObjectsList();
 
         btnRunQuery = new JButton("Сделать запрос");
         btnRunQuery.addActionListener(new AbstractAction() {
@@ -59,6 +57,10 @@ public class WatchesPanel extends ContentPanel {
                 if(rbQuery1.isSelected()) runDialogQuery1();
                 if(rbQuery2.isSelected()) runDialogQuery2();
                 if(rbQuery3.isSelected()) runDialogQuery3();
+                if(rbNoQuery.isSelected()) {
+                    controller.updateItemsList();
+                    updateItemsTable();
+                }
             }
         });
 
@@ -103,6 +105,218 @@ public class WatchesPanel extends ContentPanel {
         contentPanel.add(controlPanel, BorderLayout.SOUTH);
     } // buildPanel
 
+    // Создание заголовка таблицы
+    @Override
+    protected String[] tableHeaderBuilder() {
+        return new String[]{"id", "Марка", "Цена", "Количество", "Видимость", "Производитель", "Тип"};
+    } // tableHeaderBuilder
+
+
+    // Диалоговое окно изменения элемента
+    @Override
+    final protected JDialog createEditDialog(String title, boolean modal, IData item){
+
+        JButton acceptBtn, cancelBtn;
+
+        JLabel lblMark, lblPrice, lblQuantity, lblProducer, lblType;
+        JTextField txtMark;
+        JSpinner spnPrice, spnQuantity;
+        JCheckBox  chkVisible;
+        JComboBox cboxProducer, cboxType;
+
+        JDialog dialog = new JDialog(controller.getMainframe(), title, modal);
+        dialog.setLayout(new BorderLayout(5,5));
+        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        dialog.setSize(300, 320);
+        dialog.setLocationRelativeTo(dialog.getOwner());
+        dialog.setResizable(false);
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
+
+        lblMark = new JLabel("Марка");
+        lblPrice = new JLabel("Цена");
+        lblQuantity = new JLabel("Количество");
+        lblProducer = new JLabel("Производитель");
+        lblType = new JLabel("Тип");
+
+        txtMark = new JTextField(((Watch)item).getMark());
+        spnPrice = new JSpinner(new SpinnerNumberModel(0,0,9999999,0.01));
+        spnPrice.setValue(((Watch)item).getPrice());
+        spnQuantity = new JSpinner(new SpinnerNumberModel(0,0,9999,1));
+        spnQuantity.setValue(((Watch)item).getQuantity());
+        chkVisible = new JCheckBox("Видимость",((Watch)item).isVisible());
+
+        List<IData> producerList = ((WatchController)controller).getProducerList();
+        List<IData> watchTypeList = ((WatchController)controller).getWatchTypeList();
+
+        cboxProducer = new JComboBox(producerList.toArray());
+        cboxType = new JComboBox(watchTypeList.toArray());
+
+        acceptBtn = new JButton("Сохранить");
+        acceptBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WatchProducer producer = (WatchProducer)cboxProducer.getSelectedItem();
+                WatchType type = (WatchType)cboxType.getSelectedItem();
+
+                double price = (Double)spnPrice.getValue();
+                int quantity = (Integer)spnQuantity.getValue();
+
+                controller.setItem(new Watch(item.getId(),
+                        txtMark.getText(),
+                        price,
+                        quantity,
+                        chkVisible.isSelected(),
+                        producer.getId(),
+                        type.getId()));
+                controller.saveItem();
+
+                controller.updateItemsList();
+                updateItemsTable();
+
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
+        });
+
+        cancelBtn = new JButton("Отмена");
+        cancelBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
+        });
+
+        controlPanel.add(acceptBtn);
+        controlPanel.add(cancelBtn);
+
+        contentPanel.add(lblMark);
+        contentPanel.add(txtMark);
+        contentPanel.add(lblPrice);
+        contentPanel.add(spnPrice);
+        contentPanel.add(lblQuantity);
+        contentPanel.add(spnQuantity);
+        contentPanel.add(lblProducer);
+        contentPanel.add(cboxProducer);
+        contentPanel.add(lblType);
+        contentPanel.add(cboxType);
+        contentPanel.add(chkVisible);
+
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.add(controlPanel, BorderLayout.SOUTH);
+
+        return dialog;
+    } // createEditDialog
+
+
+    // Диалоговое окно добавления элемента в базу
+    @Override
+    final protected JDialog createAddDialog(String title, boolean modal){
+        JButton acceptBtn, cancelBtn;
+
+        JLabel lblMark, lblPrice, lblQuantity, lblProducer, lblType;
+        JTextField txtMark, txtPrice;
+        JSpinner spnQuantity;
+        JCheckBox  chkVisible;
+        JComboBox cboxProducer, cboxType;
+
+        JDialog dialog = new JDialog(controller.getMainframe(), title, modal);
+        dialog.setLayout(new BorderLayout(5,5));
+        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        dialog.setSize(300, 320);
+        dialog.setLocationRelativeTo(dialog.getOwner());
+        dialog.setResizable(false);
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
+
+        lblMark = new JLabel("Марка");
+        lblPrice = new JLabel("Цена");
+        lblQuantity = new JLabel("Количество");
+        lblProducer = new JLabel("Производитель");
+        lblType = new JLabel("Тип");
+
+        txtMark = new JTextField();
+        txtPrice = new JTextField();
+        spnQuantity = new JSpinner(new SpinnerNumberModel(0,0,9999,1));
+        chkVisible = new JCheckBox("Видимость");
+
+        List<IData> producerList = ((WatchController)controller).getProducerList();
+        List<IData> watchTypeList = ((WatchController)controller).getWatchTypeList();
+
+        cboxProducer = new JComboBox(producerList.toArray());
+        cboxType = new JComboBox(watchTypeList.toArray());
+
+        acceptBtn = new JButton("Сохранить");
+        acceptBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    WatchProducer producer = (WatchProducer)cboxProducer.getSelectedItem();
+                    WatchType type = (WatchType)cboxType.getSelectedItem();
+
+                    double price = Double.parseDouble(txtPrice.getText());
+                    int quantity = (Integer)spnQuantity.getValue();
+
+                    Watch watch = new Watch(txtMark.getText(),
+                            price,
+                            quantity,
+                            chkVisible.isSelected(),
+                            producer.getId(),
+                            type.getId());
+                    controller.saveNewItem(watch);
+
+                    controller.updateItemsList();
+                    updateItemsTable();
+
+                    dialog.setVisible(false);
+                    dialog.dispose();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Ошибка ввода цены");
+                    dialog.setVisible(false);
+                    dialog.dispose();
+                }
+            }
+        });
+
+        cancelBtn = new JButton("Отмена");
+        cancelBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.setVisible(false);
+                dialog.dispose();
+            }
+        });
+
+        controlPanel.add(acceptBtn);
+        controlPanel.add(cancelBtn);
+
+        contentPanel.add(lblMark);
+        contentPanel.add(txtMark);
+        contentPanel.add(lblPrice);
+        contentPanel.add(txtPrice);
+        contentPanel.add(lblQuantity);
+        contentPanel.add(spnQuantity);
+        contentPanel.add(lblProducer);
+        contentPanel.add(cboxProducer);
+        contentPanel.add(lblType);
+        contentPanel.add(cboxType);
+        contentPanel.add(chkVisible);
+
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.add(controlPanel, BorderLayout.SOUTH);
+
+        return dialog;
+    } // createAddDialog
+
+
+
+    // ОБРАБОТКА ЗАПРОСОВ
+
     private void runDialogQuery1() {
         JButton acceptBtn, cancelBtn;
 
@@ -132,7 +346,8 @@ public class WatchesPanel extends ContentPanel {
             public void actionPerformed(ActionEvent e) {
                 WatchType type = (WatchType)cboxType.getSelectedItem();
 
-                objectList = ((WatchController)controller).watchQuery1(type);
+                //objectList =
+                        ((WatchController)controller).watchQuery1(type);
 
                 updateItemsTable();
 
@@ -198,7 +413,8 @@ public class WatchesPanel extends ContentPanel {
                     WatchType type = (WatchType) cboxType.getSelectedItem();
                     double price = Double.parseDouble(txtPrice.getText());
 
-                    objectList = ((WatchController) controller).watchQuery2(price, type);
+                    //objectList =
+                            ((WatchController) controller).watchQuery2(price, type);
 
                     updateItemsTable();
 
@@ -263,7 +479,8 @@ public class WatchesPanel extends ContentPanel {
             public void actionPerformed(ActionEvent e) {
                 String country = txtCountry.getText();
 
-                objectList = ((WatchController) controller).watchQuery3(country);
+                //objectList =
+                        ((WatchController) controller).watchQuery3(country);
 
                 updateItemsTable();
 
@@ -293,230 +510,7 @@ public class WatchesPanel extends ContentPanel {
         dialog.setVisible(true);
     } // runDialogQuery3
 
-    @Override
-    protected JTable tableBuilder() {
-        String[] header = tableHeaderBuilder();
-        DefaultTableModel dfm = new DefaultTableModel(header, 0){
 
-            @Override
-            public boolean isCellEditable(int x, int y) {
-                return false;
-            }
-        };
-
-        for(Object[] objects : objectList) {
-            dfm.addRow(objects);
-        }
-
-        JTable table = new JTable(dfm);
-        table.setFillsViewportHeight(true);
-        table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.getTableHeader().setReorderingAllowed(false);
-
-        return table;
-    } // tableBuilder
-
-    @Override
-    protected String[] tableHeaderBuilder() {
-        return new String[]{"id", "Марка", "Цена", "Количество", "Видимость", "Производитель", "Тип"};
-    } // tableHeaderBuilder
-
-
-    @Override
-    final protected JDialog createEditDialog(String title, boolean modal, IData item){
-
-        JButton acceptBtn, cancelBtn;
-
-        JLabel lblMark, lblPrice, lblQuantity, lblProducer, lblType;
-        JTextField txtMark;
-        JSpinner spnPrice, spnQuantity;
-        JCheckBox  chkVisible;
-        JComboBox cboxProducer, cboxType;
-
-        JDialog dialog = new JDialog(controller.getMainframe(), title, modal);
-        dialog.setLayout(new BorderLayout(5,5));
-        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        dialog.setSize(300, 320);
-        dialog.setLocationRelativeTo(dialog.getOwner());
-        dialog.setResizable(false);
-
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
-
-        lblMark = new JLabel("Марка");
-        lblPrice = new JLabel("Цена");
-        lblQuantity = new JLabel("Количество");
-        lblProducer = new JLabel("Производитель");
-        lblType = new JLabel("Тип");
-
-        txtMark = new JTextField(((Watch)item).getMark());
-        spnPrice = new JSpinner(new SpinnerNumberModel(0,0,9999999,0.01));
-        spnPrice.setValue(((Watch)item).getPrice());
-        spnQuantity = new JSpinner(new SpinnerNumberModel(0,0,9999,1));
-        spnQuantity.setValue(((Watch)item).getQuantity());
-        chkVisible = new JCheckBox("Видимость",((Watch)item).isVisible());
-
-        List<IData> producerList = ((WatchController)controller).getProducerList();
-        List<IData> watchTypeList = ((WatchController)controller).getWatchTypeList();
-
-        cboxProducer = new JComboBox(producerList.toArray());
-        cboxType = new JComboBox(watchTypeList.toArray());
-
-        acceptBtn = new JButton("Сохранить");
-        acceptBtn.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                WatchProducer producer = (WatchProducer)cboxProducer.getSelectedItem();
-                WatchType type = (WatchType)cboxType.getSelectedItem();
-
-                double price = (Double)spnPrice.getValue();
-                int quantity = (Integer)spnQuantity.getValue();
-
-                controller.setItem(new Watch(item.getId(),
-                        txtMark.getText(),
-                        price,
-                        quantity,
-                        chkVisible.isSelected(),
-                        producer.getId(),
-                        type.getId()));
-                controller.saveItem();
-
-                updateItemsTable();
-
-                dialog.setVisible(false);
-                dialog.dispose();
-            }
-        });
-
-        cancelBtn = new JButton("Отмена");
-        cancelBtn.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dialog.setVisible(false);
-                dialog.dispose();
-            }
-        });
-
-        controlPanel.add(acceptBtn);
-        controlPanel.add(cancelBtn);
-
-        contentPanel.add(lblMark);
-        contentPanel.add(txtMark);
-        contentPanel.add(lblPrice);
-        contentPanel.add(spnPrice);
-        contentPanel.add(lblQuantity);
-        contentPanel.add(spnQuantity);
-        contentPanel.add(lblProducer);
-        contentPanel.add(cboxProducer);
-        contentPanel.add(lblType);
-        contentPanel.add(cboxType);
-        contentPanel.add(chkVisible);
-
-        dialog.add(contentPanel, BorderLayout.CENTER);
-        dialog.add(controlPanel, BorderLayout.SOUTH);
-
-        return dialog;
-    } // createEditDialog
-
-    @Override
-    final protected JDialog createAddDialog(String title, boolean modal){
-        JButton acceptBtn, cancelBtn;
-
-        JLabel lblMark, lblPrice, lblQuantity, lblProducer, lblType;
-        JTextField txtMark, txtPrice;
-        JSpinner spnQuantity;
-        JCheckBox  chkVisible;
-        JComboBox cboxProducer, cboxType;
-
-        JDialog dialog = new JDialog(controller.getMainframe(), title, modal);
-        dialog.setLayout(new BorderLayout(5,5));
-        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        dialog.setSize(300, 320);
-        dialog.setLocationRelativeTo(dialog.getOwner());
-        dialog.setResizable(false);
-
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,5));
-
-        lblMark = new JLabel("Марка");
-        lblPrice = new JLabel("Цена");
-        lblQuantity = new JLabel("Количество");
-        lblProducer = new JLabel("Производитель");
-        lblType = new JLabel("Тип");
-
-        txtMark = new JTextField();
-        txtPrice = new JTextField();
-        spnQuantity = new JSpinner(new SpinnerNumberModel(0,0,9999,1));
-        chkVisible = new JCheckBox("Видимость");
-
-        List<IData> producerList = ((WatchController)controller).getProducerList();
-        List<IData> watchTypeList = ((WatchController)controller).getWatchTypeList();
-
-        cboxProducer = new JComboBox(producerList.toArray());
-        cboxType = new JComboBox(watchTypeList.toArray());
-
-        acceptBtn = new JButton("Сохранить");
-        acceptBtn.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    WatchProducer producer = (WatchProducer)cboxProducer.getSelectedItem();
-                    WatchType type = (WatchType)cboxType.getSelectedItem();
-
-                    double price = Double.parseDouble(txtPrice.getText());
-                    int quantity = (Integer)spnQuantity.getValue();
-
-                    Watch watch = new Watch(txtMark.getText(),
-                            price,
-                            quantity,
-                            chkVisible.isSelected(),
-                            producer.getId(),
-                            type.getId());
-                    controller.saveNewItem(watch);
-
-                    updateItemsTable();
-
-                    dialog.setVisible(false);
-                    dialog.dispose();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Ошибка ввода цены");
-                    dialog.setVisible(false);
-                    dialog.dispose();
-                }
-            }
-        });
-
-        cancelBtn = new JButton("Отмена");
-        cancelBtn.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dialog.setVisible(false);
-                dialog.dispose();
-            }
-        });
-
-        controlPanel.add(acceptBtn);
-        controlPanel.add(cancelBtn);
-
-        contentPanel.add(lblMark);
-        contentPanel.add(txtMark);
-        contentPanel.add(lblPrice);
-        contentPanel.add(txtPrice);
-        contentPanel.add(lblQuantity);
-        contentPanel.add(spnQuantity);
-        contentPanel.add(lblProducer);
-        contentPanel.add(cboxProducer);
-        contentPanel.add(lblType);
-        contentPanel.add(cboxType);
-        contentPanel.add(chkVisible);
-
-        dialog.add(contentPanel, BorderLayout.CENTER);
-        dialog.add(controlPanel, BorderLayout.SOUTH);
-
-        return dialog;
-    } // createAddDialog
 
 
 }

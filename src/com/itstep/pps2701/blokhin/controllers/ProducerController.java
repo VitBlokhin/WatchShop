@@ -18,4 +18,15 @@ public class ProducerController extends Controller {
         this.frame = frame;
         view = new ProducersPanel(pane, "Производители", "Работа с производителями", this);
     } // init
+
+    // Запрос 4
+    public void producerQuery4(int quantity) {
+
+        try {
+            itemList = ((ProducerModel)model).query4(quantity);
+
+        } catch(Exception ex) {
+            frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
+        }
+    } // producerQuery4
 }

@@ -53,6 +53,7 @@ public class WatchTypesPanel extends ContentPanel {
                         txtName.getText()));
                 controller.saveItem();
 
+                controller.updateItemsList();
                 updateItemsTable();
 
                 dialog.setVisible(false);
@@ -108,6 +109,7 @@ public class WatchTypesPanel extends ContentPanel {
                 WatchType watchType = new WatchType(txtName.getText());
                 controller.saveNewItem(watchType);
 
+                controller.updateItemsList();
                 updateItemsTable();
 
                 dialog.setVisible(false);
