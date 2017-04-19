@@ -1,5 +1,7 @@
 package com.itstep.pps2701.blokhin.controllers;
 
+import com.itstep.pps2701.blokhin.data.IData;
+import com.itstep.pps2701.blokhin.data.User;
 import com.itstep.pps2701.blokhin.models.UserModel;
 import com.itstep.pps2701.blokhin.views.MainFrame;
 import com.itstep.pps2701.blokhin.views.UsersPanel;
@@ -11,8 +13,6 @@ import java.sql.SQLException;
  * Created by Vit on 12.04.2017.
  */
 public class UserController extends Controller {
-
-
     public UserController() {
 
     }
@@ -24,4 +24,4 @@ public class UserController extends Controller {
 
         view = new UsersPanel(pane, "Пользователи", "Работа со списком пользователей", this);
     } // init
-}
+} // UserController

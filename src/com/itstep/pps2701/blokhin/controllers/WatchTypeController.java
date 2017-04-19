@@ -20,4 +20,4 @@ public class WatchTypeController extends Controller {
         this.frame = frame;
         view = new WatchTypesPanel(pane, "Типы часов", "Работа с типами часов", this);
     } // init
-}
+} // WatchTypeController

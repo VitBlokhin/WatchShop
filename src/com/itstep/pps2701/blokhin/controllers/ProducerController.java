@@ -29,4 +29,4 @@ public class ProducerController extends Controller {
             frame.showErrorDialog("Ошибка загрузки данных", ex.getMessage());
         }
     } // producerQuery4
-}
+} // ProducerController

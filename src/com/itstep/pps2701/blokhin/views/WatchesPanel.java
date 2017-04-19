@@ -144,6 +144,7 @@ public class WatchesPanel extends ContentPanel {
         spnQuantity.setValue(((Watch)item).getQuantity());
         chkVisible = new JCheckBox("Видимость",((Watch)item).isVisible());
 
+        ((WatchController)controller).updateProducerAndTypeLists();
         List<IData> producerList = ((WatchController)controller).getProducerList();
         List<IData> watchTypeList = ((WatchController)controller).getWatchTypeList();
 
