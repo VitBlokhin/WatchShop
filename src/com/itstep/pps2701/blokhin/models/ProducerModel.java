@@ -65,8 +65,8 @@ public class ProducerModel  extends Model {
     @Override
     public void addItem(IData item) throws SQLException {
         WatchProducer tmp = (WatchProducer)item;
-        String sqlInsert = "insert into `producers` (`name`, `country`)"
-                + " values (\'" + tmp.getName()
+        String sqlInsert = "insert into `producers` (`name`, `country`) "
+                + "values (\'" + tmp.getName()
                 + "\', \'" + tmp.getCountry()
                 + "\');";
         PreparedStatement pstatement = conn.prepareStatement(sqlInsert);
@@ -85,11 +85,11 @@ public class ProducerModel  extends Model {
     public List<IData> query4(int quantity) throws SQLException {
         List<IData> watchList = new ArrayList<>();
 
-        String sqlRequest = "select p.*" +
-                                "from watches as w" +
-                                "join producers as p on w.producer_id = p.id" +
-                                "group by p.id" +
-                                "HAVING sum(quantity) >" + quantity + ";";
+        String sqlRequest = "select p.* " +
+                                "from watches as w " +
+                                "join producers as p on w.producer_id = p.id " +
+                                "group by p.id " +
+                                "HAVING sum(quantity) > " + quantity + ";";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
 

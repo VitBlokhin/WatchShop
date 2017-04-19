@@ -58,7 +58,7 @@ public class WatchModel extends Model {
     public void updateItem(IData item) throws SQLException {
         Watch tmp = (Watch)item;
         int visible = tmp.isVisible() ? 1 : 0;
-        String sqlUpdate = "update `watches`"
+        String sqlUpdate = "update `watches` "
                 + " set `mark` = \'" + tmp.getMark()
                 + "\', `price` = \'" + tmp.getPrice()
                 + "\', `quantity` = \'" + tmp.getQuantity()
@@ -94,7 +94,7 @@ public class WatchModel extends Model {
         List<IData> watchList = new ArrayList<>();
 
         String sqlRequest = "SELECT w.* FROM watches as w " +
-                "join watch_types as wt on w.type_id = wt.id" +
+                "join watch_types as wt on w.type_id = wt.id " +
                 "where wt.type_name = '" + type.getTypename() + "'";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
@@ -113,7 +113,7 @@ public class WatchModel extends Model {
         List<IData> watchList = new ArrayList<>();
 
         String sqlRequest = "SELECT w.* FROM watches as w " +
-                "join watch_types as wt on w.type_id = wt.id" +
+                "join watch_types as wt on w.type_id = wt.id " +
                 "where w.price <= " + price + " and wt.type_name = \'" + type.getTypename() + "\';";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
@@ -131,7 +131,7 @@ public class WatchModel extends Model {
         List<IData> watchList = new ArrayList<>();
 
         String sqlRequest = "SELECT w.* FROM watches as w " +
-                "join producers as p on w.producer_id = p.id" +
+                "join producers as p on w.producer_id = p.id " +
                 "where p.country = \'" + country + "\'";
         PreparedStatement pstatement = conn.prepareStatement(sqlRequest);
         ResultSet result = pstatement.executeQuery();
