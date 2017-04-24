@@ -110,8 +110,8 @@ public abstract class ContentPanel implements IView{
         addDialog.setVisible(true);
     } // showAddDialog
 
-    protected abstract String[] tableHeaderBuilder();
 
+    abstract protected String[] tableHeaderBuilder();
     abstract protected JDialog createEditDialog(String name, boolean modal, IData item);
     abstract protected JDialog createAddDialog(String title, boolean modal);
 

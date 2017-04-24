@@ -13,14 +13,13 @@ public class MainFrame extends JFrame {
     private JMenu menuFile;
     private JMenuItem mnuLogin;
     private JMenuItem mnuLogoff;
+    private JTabbedPane tabbedPane;
 
     private SessionController sessionController;
 
     public void setSessionController(SessionController sessionController) {
         this.sessionController = sessionController;
     }
-
-    private JTabbedPane tabbedPane;
 
     public MainFrame(String title) throws HeadlessException {
         super(title);
