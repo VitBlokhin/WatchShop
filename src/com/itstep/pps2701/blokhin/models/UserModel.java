@@ -19,6 +19,7 @@ public class UserModel extends Model{
         super(Utils.getConnection());
     }
 
+    @Override
     public User getItemById(int id) throws SQLException{
         User user;
         String sqlRequest = "select * from `users` where `id` = \'" + id + "\';";
@@ -33,6 +34,7 @@ public class UserModel extends Model{
         return user;
     } // getItemById
 
+    @Override
     public List<IData> getItemList() throws SQLException{
         List<IData> userList= new ArrayList<>();
 
@@ -100,6 +102,7 @@ public class UserModel extends Model{
         } else return null;
     } // getUserByNamePassword
 
+    @Override
     final protected User parseItem(ResultSet result) throws SQLException{
         return new User(result.getInt("id"),
                 result.getString("name"),
